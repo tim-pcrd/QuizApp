@@ -55,7 +55,5 @@ namespace QuizApp.Application.UnitTests.AutoMapper
             Assert.Equal(quiz.Creator.Id, quizListDto.Creator.Id);
             Assert.Equal(quiz.Creator.Name, quizListDto.Creator.Name);
         }
-
-
     }
 }
