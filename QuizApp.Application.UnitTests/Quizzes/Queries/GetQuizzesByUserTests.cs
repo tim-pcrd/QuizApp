@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using QuizApp.Application.Features.Quizzes.Queries;
-using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUserQuery;
+using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Helpers;
 using QuizApp.Application.Interfaces.Persistence;
 using QuizApp.Application.Profiles;
@@ -33,11 +32,11 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         [Fact]
         public async Task GetQuizzesByUserHandler_ShouldReturn_PaginatedResult()
         {
-            var sut = new GetQuizzesByUser.Handler(_mapper, _context);
+            var sut = new GetQuizzesByUserHandler(_mapper, _context);
 
-            var result = await sut.Handle(new GetQuizzesByUser.Query(1, 2, Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")), CancellationToken.None);
+            var result = await sut.Handle(new GetQuizzesByUserQuery(1, 2, Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")), CancellationToken.None);
 
-            Assert.IsType<Pagination<QuizListByUserVm>>(result);
+            Assert.IsType<Pagination<GetQuizzesByUserVm>>(result);
             Assert.Equal(1, result.PageIndex);
             Assert.Equal(2, result.PageSize);
             Assert.Equal(3, result.Count);

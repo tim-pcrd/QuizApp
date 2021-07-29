@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using QuizApp.Application.Exceptions;
-using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetailsQuery;
+using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Persistence;
 using System;
 using System.Collections.Generic;
@@ -27,19 +27,19 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         [Fact]
         public async Task GetQuizDetailsHandler_ThrowsNotFoundException_IfQuizIsNull()
         {
-            var sut = new GetQuizDetails.Handler(_context, _mapper);
+            var sut = new GetQuizDetailsHandler(_context, _mapper);
 
-            await Assert.ThrowsAsync<NotFoundException>(async() => await sut.Handle(new GetQuizDetails.Query { Id = 9999 }, CancellationToken.None));
+            await Assert.ThrowsAsync<NotFoundException>(async() => await sut.Handle(new GetQuizDetailsQuery { Id = 9999 }, CancellationToken.None));
         }
 
         [Fact]
         public async Task GetQuizDetailsHandler_ShouldReturn_QuizDetailsVm()
         {
-            var sut = new GetQuizDetails.Handler(_context, _mapper);
+            var sut = new GetQuizDetailsHandler(_context, _mapper);
 
-            var result = await sut.Handle(new GetQuizDetails.Query { Id = 1 }, CancellationToken.None);
+            var result = await sut.Handle(new GetQuizDetailsQuery { Id = 1 }, CancellationToken.None);
 
-            Assert.IsType<QuizDetailsVm>(result);
+            Assert.IsType<GetQuizDetailsVm>(result);
             Assert.Equal(1, result.Id);
         }
 

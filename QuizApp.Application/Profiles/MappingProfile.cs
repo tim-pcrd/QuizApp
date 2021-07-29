@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using QuizApp.Application.Dtos;
-using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetailsQuery;
-using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUserQuery;
+using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
+using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace QuizApp.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<Quiz, QuizListByUserVm>()
+            CreateMap<Quiz, GetQuizzesByUserVm>()
                 .ForMember(
                     dest => dest.Category,
                     opt => opt.MapFrom(src => src.Category.Name));
@@ -26,7 +26,7 @@ namespace QuizApp.Application.Profiles
                 .ForMember(
                     dest => dest.ImageUrl,
                     opt => opt.MapFrom(src => src.Image.Url));
-            CreateMap<Quiz, QuizDetailsVm>();
+            CreateMap<Quiz, GetQuizDetailsVm>();
         }
     }
 }

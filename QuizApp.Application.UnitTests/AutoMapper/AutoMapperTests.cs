@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUserQuery;
+using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Profiles;
 using QuizApp.Domain.Entities;
 using System;
@@ -46,7 +46,7 @@ namespace QuizApp.Application.UnitTests.AutoMapper
                 StartDate = new DateTimeOffset(new DateTime(2021, 7, 31))
             };
 
-            var quizListDto = _mapper.Map<QuizListByUserVm>(quiz);
+            var quizListDto = _mapper.Map<GetQuizzesByUserVm>(quiz);
 
             Assert.Equal(quiz.Id, quizListDto.Id);
             Assert.Equal(quiz.Name, quizListDto.Name);
