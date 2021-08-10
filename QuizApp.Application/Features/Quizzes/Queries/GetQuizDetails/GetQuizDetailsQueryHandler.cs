@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails
 {
-    public class GetQuizDetailsHandler : IRequestHandler<GetQuizDetailsQuery, GetQuizDetailsVm>
+    public class GetQuizDetailsQueryHandler : IRequestHandler<GetQuizDetailsQuery, GetQuizDetailsVm>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetQuizDetailsHandler(IDbContext context, IMapper mapper)
+        public GetQuizDetailsQueryHandler(IDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

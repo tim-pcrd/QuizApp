@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.API.Helpers;
+using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Helpers;
@@ -39,5 +40,13 @@ namespace QuizApp.API.Controllers
 
             return Ok(quiz);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateQuiz(CreateQuizCommand createQuizCommand)
+        {
+            var response = await _mediator.Send(createQuizCommand);
+
+            return Ok(response);
+        } 
     }
 }

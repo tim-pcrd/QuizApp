@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using QuizApp.Application.Interfaces.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ using ex = QuizApp.Application.Exceptions;
 
 namespace QuizApp.Application.Helpers
 {
-    public class Validation<T> where T : class
+    public class Validation<T> : IValidation<T> where T : class
     {
-        public static void Validate(AbstractValidator<T> validator, T request)
+        public void Validate(AbstractValidator<T> validator, T request)
         {
             var validationResult = validator.Validate(request);
             if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);

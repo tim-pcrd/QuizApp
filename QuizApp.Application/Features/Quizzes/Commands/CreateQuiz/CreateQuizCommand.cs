@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
+using System;
 
 namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
 {
 
-    public class CreateQuizCommand : IRequest
+    public class CreateQuizCommand : IRequest<int>
     {
+
         public string Name { get; set; }
         public int NumberOfQuestions { get; set; }
         public int CategoryId { get; set; }
@@ -16,12 +18,12 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
         public CreateQuizCommandValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Naam is verplicht.")
+                .NotEmpty()
                 .NotNull()
-                .MaximumLength(30).WithMessage("Naam mag maximaal 30 tekens bevatten.");
+                .MaximumLength(30);
 
             RuleFor(x => x.NumberOfQuestions)
-                .Must(x => x == 10 || x == 20).WithMessage("Aantal vragen moet 10 of 20 zijn.");
+                .Must(x => x == 10 || x == 20);
 
             RuleFor(x => x.CategoryId)
                 .GreaterThan(0);

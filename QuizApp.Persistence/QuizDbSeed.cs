@@ -17,7 +17,7 @@ namespace QuizApp.Persistence
                 var player = new Player
                 {
                     Name = "Tim",
-                    AccountId = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
+                    Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
                 };
 
                     var quizzes = new List<Quiz>
@@ -313,7 +313,7 @@ namespace QuizApp.Persistence
                             Creator = new Player
                             {
                                 Name = "Ruimtesonde",
-                                AccountId = Guid.NewGuid()
+                                Id = Guid.NewGuid()
                             },
                             Category = new Category
                             {

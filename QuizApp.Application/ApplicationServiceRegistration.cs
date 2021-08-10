@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using QuizApp.Application.Helpers;
+using QuizApp.Application.Interfaces.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace QuizApp.Application
         {
             services.AddAutoMapper(typeof(ApplicationServiceRegistration).Assembly);
             services.AddMediatR(typeof(ApplicationServiceRegistration).Assembly);
+            services.AddTransient(typeof(IValidation<>), typeof(Validation<>));
             return services;
         }
     }

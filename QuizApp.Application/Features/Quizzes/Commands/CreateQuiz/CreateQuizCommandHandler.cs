@@ -6,30 +6,33 @@ using QuizApp.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using QuizApp.Application.Helpers;
+using QuizApp.Application.Interfaces.Application;
 
 namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
 {
-    public class CreateQuizHandler : IRequestHandler<CreateQuizCommand>
+    public class CreateQuizCommandHandler : IRequestHandler<CreateQuizCommand, int>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IValidation<CreateQuizCommand> _validation;
 
-        public CreateQuizHandler(IDbContext context, IMapper mapper)
+        public CreateQuizCommandHandler(IDbContext context, IMapper mapper, IValidation<CreateQuizCommand> validation)
         {
             _context = context;
             _mapper = mapper;
+            _validation = validation;
         }
 
-        public async Task<Unit> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
         {
-            Validation<CreateQuizCommand>.Validate(new CreateQuizCommandValidator(), request);
+            _validation.Validate(new CreateQuizCommandValidator(), request);
 
             var quizToCreate = _mapper.Map<Quiz>(request);
 
             _context.Quizzes.Add(quizToCreate);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return quizToCreate.Id;
         }
     }
 }

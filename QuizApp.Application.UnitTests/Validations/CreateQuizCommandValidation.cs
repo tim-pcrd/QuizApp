@@ -15,14 +15,15 @@ namespace QuizApp.Application.UnitTests.Validations
         [Fact]
         public void Should_ThrowNoException_WhenValid()
         {
-            var command = new CreateQuizCommand
+            var createQuizCommand = new CreateQuizCommand
             {
                 CategoryId = 1,
                 Name = "test",
                 NumberOfQuestions = 10
             };
 
-            var exception = Record.Exception(() => Validation<CreateQuizCommand>.Validate(new CreateQuizCommandValidator(), command));
+
+            var exception = Record.Exception(() => new Validation<CreateQuizCommand>().Validate(new CreateQuizCommandValidator(), createQuizCommand));
 
             Assert.Null(exception);
         }
@@ -32,14 +33,16 @@ namespace QuizApp.Application.UnitTests.Validations
         [InlineData("ffjieijfiefjfjiejofizjefozjefoizjeofzeofjzeoifjozzefzfzfzefze", "Naam mag maximaal 30 tekens bevatten.")]
         public void Should_ThrowException_WhenNameIsInvalid(string name, string message)
         {
-            var command = new CreateQuizCommand
+
+            var createQuizCommand = new CreateQuizCommand
             {
                 CategoryId = 1,
                 Name = name,
                 NumberOfQuestions = 10
             };
 
-            var exception = Record.Exception(() => Validation<CreateQuizCommand>.Validate(new CreateQuizCommandValidator(), command));
+
+            var exception = Record.Exception(() => new Validation<CreateQuizCommand>().Validate(new CreateQuizCommandValidator(), createQuizCommand));
 
             Assert.IsType<ValidationException>(exception);
             Assert.Equal("Name", ((ValidationException)exception).ValidationErrors.First().Key);
@@ -54,14 +57,14 @@ namespace QuizApp.Application.UnitTests.Validations
         [InlineData(21)]
         public void Should_ThrowException_WhenNumberOfQuestionsIsInvalid(int number)
         {
-            var command = new CreateQuizCommand
+            var createQuizCommand = new CreateQuizCommand
             {
                 CategoryId = 1,
                 Name = "test",
                 NumberOfQuestions = number
             };
 
-            var exception = Record.Exception(() => Validation<CreateQuizCommand>.Validate(new CreateQuizCommandValidator(), command));
+            var exception = Record.Exception(() => new Validation<CreateQuizCommand>().Validate(new CreateQuizCommandValidator(), createQuizCommand));
 
             Assert.IsType<ValidationException>(exception);
             Assert.Equal("NumberOfQuestions", ((ValidationException)exception).ValidationErrors.First().Key);

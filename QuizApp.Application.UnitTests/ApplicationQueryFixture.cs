@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using QuizApp.Application.Interfaces;
 using QuizApp.Application.Profiles;
 using QuizApp.Domain.Entities;
 using QuizApp.Persistence;
@@ -22,7 +24,9 @@ namespace QuizApp.Application.UnitTests
             var options = new DbContextOptionsBuilder<QuizDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            Context = new QuizDbContext(options);
+            var loggedInUserServiceMock = new Mock<ILoggedInUserService>();
+
+            Context = new QuizDbContext(options, loggedInUserServiceMock.Object);
 
             Context.Database.EnsureCreated();
             if (!Context.Quizzes.Any())
@@ -30,13 +34,13 @@ namespace QuizApp.Application.UnitTests
                 var player1 = new Player
                 {
                     Name = "Tim",
-                    AccountId = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
+                    Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
                 };
 
                 var player2 = new Player
                 {
                     Name = "Ruimtesonde",
-                    AccountId = Guid.NewGuid()
+                    Id = Guid.NewGuid()
                 };
 
                 var category = new Category

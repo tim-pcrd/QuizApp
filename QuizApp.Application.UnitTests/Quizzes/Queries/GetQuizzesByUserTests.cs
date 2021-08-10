@@ -32,7 +32,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         [Fact]
         public async Task GetQuizzesByUserHandler_ShouldReturn_PaginatedResult()
         {
-            var sut = new GetQuizzesByUserHandler(_mapper, _context);
+            var sut = new GetQuizzesByUserQueryHandler(_mapper, _context);
 
             var result = await sut.Handle(new GetQuizzesByUserQuery(1, 2, Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")), CancellationToken.None);
 

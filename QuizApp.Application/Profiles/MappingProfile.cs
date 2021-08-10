@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using QuizApp.Application.Dtos;
+using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Domain.Entities;
@@ -18,15 +19,24 @@ namespace QuizApp.Application.Profiles
             CreateMap<Quiz, GetQuizzesByUserVm>()
                 .ForMember(
                     dest => dest.Category,
-                    opt => opt.MapFrom(src => src.Category.Name));
-            CreateMap<Player, CreatorDto>();
+                    opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(
+                    dest => dest.Creator,
+                    opt => opt.MapFrom(src => src.Creator.Name));
             CreateMap<Category, CategoryDto>();
             CreateMap<Answer, AnswerDto>();
             CreateMap<Question, QuestionDto>()
                 .ForMember(
                     dest => dest.ImageUrl,
                     opt => opt.MapFrom(src => src.Image.Url));
-            CreateMap<Quiz, GetQuizDetailsVm>();
+            CreateMap<Quiz, GetQuizDetailsVm>()
+                 .ForMember(
+                    dest => dest.Category,
+                    opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(
+                    dest => dest.Creator,
+                    opt => opt.MapFrom(src => src.Creator.Name));
+            CreateMap<CreateQuizCommand, Quiz>();
         }
     }
 }

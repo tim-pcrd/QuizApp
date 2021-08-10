@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Domain.Entities
 {
-    public class Player : BaseEntity
+    public class Player
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid AccountId { get; set; }
+        
     }
 }

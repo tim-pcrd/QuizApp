@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
 {
 
-    public class GetQuizzesByUserHandler : IRequestHandler<GetQuizzesByUserQuery, Pagination<GetQuizzesByUserVm>>
+    public class GetQuizzesByUserQueryHandler : IRequestHandler<GetQuizzesByUserQuery, Pagination<GetQuizzesByUserVm>>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
 
-        public GetQuizzesByUserHandler(IMapper mapper, IDbContext context)
+        public GetQuizzesByUserQueryHandler(IMapper mapper, IDbContext context)
         {
             _mapper = mapper;
             _context = context;
@@ -25,14 +25,14 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
         public async Task<Pagination<GetQuizzesByUserVm>> Handle(GetQuizzesByUserQuery request, CancellationToken cancellationToken)
         {
             var quizzes = await _context.Quizzes
-                .Where(x => x.Creator.AccountId == request.AccountId)
+                .Where(x => x.Creator.Id == request.PlayerId)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Include(x => x.Category)
                 .Include(x => x.Creator)
                 .ToListAsync();
 
-            var count = await _context.Quizzes.Where(x => x.Creator.AccountId == request.AccountId).CountAsync();
+            var count = await _context.Quizzes.Where(x => x.Creator.Id == request.PlayerId).CountAsync();
 
             return new Pagination<GetQuizzesByUserVm>(
                 request.PageIndex, request.PageSize, count, _mapper.Map<IReadOnlyList<GetQuizzesByUserVm>>(quizzes));

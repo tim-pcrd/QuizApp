@@ -14,7 +14,7 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
         public QuizStatus Status { get; set; }
         public DateTimeOffset CreationDate { get; set; }
         public DateTimeOffset? StartDate { get; set; }
-        public CreatorDto Creator { get; set; }
+        public string Creator { get; set; }
 
     }
 }

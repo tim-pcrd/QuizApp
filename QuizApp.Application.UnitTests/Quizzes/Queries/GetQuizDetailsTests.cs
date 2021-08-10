@@ -27,7 +27,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         [Fact]
         public async Task GetQuizDetailsHandler_ThrowsNotFoundException_IfQuizIsNull()
         {
-            var sut = new GetQuizDetailsHandler(_context, _mapper);
+            var sut = new GetQuizDetailsQueryHandler(_context, _mapper);
 
             await Assert.ThrowsAsync<NotFoundException>(async() => await sut.Handle(new GetQuizDetailsQuery { Id = 9999 }, CancellationToken.None));
         }
@@ -35,7 +35,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         [Fact]
         public async Task GetQuizDetailsHandler_ShouldReturn_QuizDetailsVm()
         {
-            var sut = new GetQuizDetailsHandler(_context, _mapper);
+            var sut = new GetQuizDetailsQueryHandler(_context, _mapper);
 
             var result = await sut.Handle(new GetQuizDetailsQuery { Id = 1 }, CancellationToken.None);
 
