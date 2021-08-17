@@ -6,17 +6,17 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
 {
     public class GetQuizzesByUserQuery : IRequest<Pagination<GetQuizzesByUserVm>>
     {
-        public GetQuizzesByUserQuery(int pageIndex, int pageSize, Guid playerId)
+        public GetQuizzesByUserQuery(int pageIndex, int pageSize, string userName)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
-            PlayerId = playerId;
+            UserName = userName;
         }
 
         public int PageIndex { get; }
         public int PageSize { get; }
 
-        public Guid PlayerId { get; }
+        public string UserName { get; }
     }
 
 }

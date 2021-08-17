@@ -11,12 +11,6 @@ namespace QuizApp.API.Errors
         {
         }
 
-        public IEnumerable<ApiValidationError> Errors { get; set; }
-    }
-
-    public class ApiValidationError
-    {
-        public string Property { get; set; }
-        public string[] Errors { get; set; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }

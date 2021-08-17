@@ -39,12 +39,10 @@ namespace QuizApp.API.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-
             context.Response.ContentType = "application/json";
             int statusCode = StatusCodes.Status500InternalServerError;
 
             ApiResponse apiResponse = null;
-            var result = string.Empty;
 
             //Handle custom exceptions
             switch(ex)
@@ -58,8 +56,7 @@ namespace QuizApp.API.Middleware
                     apiResponse =
                         new ApiValidationErrorResponse(statusCode)
                         {
-                            Errors = validationException.ValidationErrors.Select(
-                                x => new ApiValidationError { Property = x.Key, Errors = x.Value.ToArray()})
+                            Errors = validationException.ValidationErrors
                         };
                     break;
             }
@@ -72,7 +69,7 @@ namespace QuizApp.API.Middleware
                     ? new ApiException(StatusCodes.Status500InternalServerError, ex.Message, ex.StackTrace.ToString())
                     : new ApiException(StatusCodes.Status500InternalServerError);       
             }
-            result = JsonSerializer.Serialize(apiResponse, apiResponse.GetType(), new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var result = JsonSerializer.Serialize(apiResponse, apiResponse.GetType(), new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
             await context.Response.WriteAsync(result);
 

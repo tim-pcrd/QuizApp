@@ -19,11 +19,10 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .NotNull()
                 .MaximumLength(30);
 
             RuleFor(x => x.NumberOfQuestions)
-                .Must(x => x == 10 || x == 20);
+                .Must(x => x == 10 || x == 20).WithMessage("{PropertyName} moet 10 of 20 zijn.");
 
             RuleFor(x => x.CategoryId)
                 .GreaterThan(0);

@@ -14,20 +14,15 @@ namespace QuizApp.Persistence
                 if (!context.Quizzes.Any())
                 {
 
-                var player = new Player
-                {
-                    Name = "Tim",
-                    Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
-                };
 
-                    var quizzes = new List<Quiz>
+                var quizzes = new List<Quiz>
                     {
 
                         new Quiz
                         {
                             Name = "Quiz 1",
                             NumberOfQuestions = 10,
-                            Creator = player,
+                            CreatorName = "Tim",
                             Category = new Category
                             {
                                 Name = "Algemeen"
@@ -310,11 +305,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 2",
                             NumberOfQuestions = 10,
-                            Creator = new Player
-                            {
-                                Name = "Ruimtesonde",
-                                Id = Guid.NewGuid()
-                            },
+                            CreatorName = "Ruimtesonde",
                             Category = new Category
                             {
                                 Name = "Sport"
@@ -597,7 +588,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 3",
                             NumberOfQuestions = 10,
-                            Creator = player,
+                            CreatorName = "Tim",
                             Category = new Category
                             {
                                 Name = "Geschiedenis"

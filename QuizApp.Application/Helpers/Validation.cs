@@ -17,5 +17,12 @@ namespace QuizApp.Application.Helpers
             var validationResult = validator.Validate(request);
             if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
         }
+
+        public async Task ValidateAsync(AbstractValidator<T> validator, T request)
+        {
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
+        }
+
     }
 }

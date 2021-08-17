@@ -27,7 +27,7 @@ namespace QuizApp.API.Controllers
 
             //TODO check userId
             var quizzes = await _mediator.Send(new GetQuizzesByUserQuery(paginationParams.PageIndex, paginationParams.PageSize, 
-                Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")));
+                "Tim"));
 
             return Ok(quizzes);
         }

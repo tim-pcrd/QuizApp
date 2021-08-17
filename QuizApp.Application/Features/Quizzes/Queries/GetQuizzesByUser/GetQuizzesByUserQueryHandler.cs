@@ -25,14 +25,13 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
         public async Task<Pagination<GetQuizzesByUserVm>> Handle(GetQuizzesByUserQuery request, CancellationToken cancellationToken)
         {
             var quizzes = await _context.Quizzes
-                .Where(x => x.Creator.Id == request.PlayerId)
+                .Where(x => x.CreatorName == request.UserName)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Include(x => x.Category)
-                .Include(x => x.Creator)
                 .ToListAsync();
 
-            var count = await _context.Quizzes.Where(x => x.Creator.Id == request.PlayerId).CountAsync();
+            var count = await _context.Quizzes.Where(x => x.CreatorName == request.UserName).CountAsync();
 
             return new Pagination<GetQuizzesByUserVm>(
                 request.PageIndex, request.PageSize, count, _mapper.Map<IReadOnlyList<GetQuizzesByUserVm>>(quizzes));

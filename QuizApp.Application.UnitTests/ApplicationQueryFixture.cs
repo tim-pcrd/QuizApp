@@ -31,17 +31,8 @@ namespace QuizApp.Application.UnitTests
             Context.Database.EnsureCreated();
             if (!Context.Quizzes.Any())
             {
-                var player1 = new Player
-                {
-                    Name = "Tim",
-                    Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
-                };
 
-                var player2 = new Player
-                {
-                    Name = "Ruimtesonde",
-                    Id = Guid.NewGuid()
-                };
+
 
                 var category = new Category
                 {
@@ -55,7 +46,7 @@ namespace QuizApp.Application.UnitTests
                     {
                         Id = i,
                         Name = $"Quiz {i}",
-                        Creator = i % 2 == 0 ? player1 : player2,
+                        CreatorName = i % 2 == 0 ? "Tim" : "Ruimtesonde",
                         Category = category,
                         Questions = GetQuestions()
                     });

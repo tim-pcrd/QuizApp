@@ -12,6 +12,7 @@ using QuizApp.API.Errors;
 using QuizApp.API.Middleware;
 using QuizApp.Application;
 using QuizApp.Application.Interfaces;
+using QuizApp.Identity;
 using QuizApp.Persistence;
 using System;
 using System.Collections.Generic;
@@ -41,10 +42,10 @@ namespace QuizApp.API
                 options.SuppressMapClientErrors = true;
             });
 
-            services.Configure<JsonOptions>(options =>
-            {
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
+            //services.Configure<JsonOptions>(options =>
+            //{
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //});
 
 
             services.AddSwaggerGen(c =>
@@ -54,7 +55,8 @@ namespace QuizApp.API
 
             services
                 .AddPersistenceServices(Configuration)
-                .AddApplicationServices();
+                .AddApplicationServices()
+                .AddIdentityServices(Configuration);
 
             services.AddHttpContextAccessor();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();

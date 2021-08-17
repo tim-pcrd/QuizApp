@@ -19,10 +19,8 @@ namespace QuizApp.Persistence.Configurations
 
             builder.HasIndex(x => x.Name).IsUnique();
 
-            builder
-                .HasOne(x => x.Creator)
-                .WithMany()
-                .HasForeignKey(x => x.CreatorId);
+            builder.Property(x => x.CreatorName)
+                .IsRequired();
 
             builder
                 .HasOne(x => x.Category)

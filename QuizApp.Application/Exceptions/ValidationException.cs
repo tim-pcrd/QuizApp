@@ -10,25 +10,11 @@ namespace QuizApp.Application.Exceptions
 {
     public class ValidationException : Exception
     {
-        public Dictionary<string, ICollection<string>> ValidationErrors { get; set; }
+        public IEnumerable<string> ValidationErrors { get; set; }
 
-        public ValidationException(ValidationResult validationResult) 
-            : base($"Validation errors for {string.Join(",",validationResult.Errors.Select(x => x.PropertyName))}")
+        public ValidationException(ValidationResult validationResult)
         {
-            ValidationErrors = new Dictionary<string, ICollection<string>>();
-
-            foreach(var validationError in validationResult.Errors)
-            {
-                if (ValidationErrors.ContainsKey(validationError.PropertyName))
-                {
-                    ValidationErrors[validationError.PropertyName].Add(validationError.ErrorMessage);
-                }
-                else
-                {
-                    ValidationErrors.Add(validationError.PropertyName, new Collection<string> { validationError.ErrorMessage });
-                }
-                
-            }
+            ValidationErrors = validationResult.Errors.Select(x => x.ErrorMessage);
         }
     }
 }

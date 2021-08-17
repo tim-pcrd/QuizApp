@@ -1,13 +1,13 @@
-﻿using QuizApp.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizApp.Domain.Common
+namespace QuizApp.Identity.Models
 {
-    public interface IUserProp
+    public class ApplicationUser : IdentityUser
     {
         
     }

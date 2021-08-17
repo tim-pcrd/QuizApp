@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Domain.Entities
 {
-    public class Quiz : BaseEntity, IPlayerProps
+    public class Quiz : BaseEntity, IUserProp
     {
         public string Name { get; set; }
         public int NumberOfQuestions { get; set; }
-        public Guid CreatorId { get; set; }
-        public Player Creator { get; set; }
+        public string CreatorName { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public DateTimeOffset CreationDate { get; private set; } = DateTimeOffset.Now;

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizApp.Application.Interfaces
+namespace QuizApp.Application.Models.Identity
 {
-    public interface ILoggedInUserService
+    public class RegistrationResponse
     {
-        public string UserName { get;}
+        public string UserId { get; set; }
     }
 }

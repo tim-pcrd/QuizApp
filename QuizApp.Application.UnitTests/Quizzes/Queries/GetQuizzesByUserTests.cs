@@ -34,7 +34,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         {
             var sut = new GetQuizzesByUserQueryHandler(_mapper, _context);
 
-            var result = await sut.Handle(new GetQuizzesByUserQuery(1, 2, Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")), CancellationToken.None);
+            var result = await sut.Handle(new GetQuizzesByUserQuery(1, 2,"Tim"), CancellationToken.None);
 
             Assert.IsType<Pagination<GetQuizzesByUserVm>>(result);
             Assert.Equal(1, result.PageIndex);

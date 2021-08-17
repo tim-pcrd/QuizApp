@@ -23,7 +23,6 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails
         public async Task<GetQuizDetailsVm> Handle(GetQuizDetailsQuery request, CancellationToken cancellationToken)
         {
             var quiz = await _context.Quizzes
-                .Include(x => x.Creator)
                 .Include(x => x.Category)
                 .Include(x => x.Questions).ThenInclude(x => x.Answers)
                 .SingleOrDefaultAsync(x => x.Id == request.Id);

@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QuizApp.Persistence.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,7 +17,7 @@ namespace QuizApp.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,18 +34,6 @@ namespace QuizApp.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Quizzes",
                 columns: table => new
                 {
@@ -53,7 +41,7 @@ namespace QuizApp.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -63,15 +51,9 @@ namespace QuizApp.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Quizzes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Quizzes_Category_CategoryId",
+                        name: "FK_Quizzes_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Quizzes_Players_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "Players",
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -130,14 +112,8 @@ namespace QuizApp.Persistence.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Category_Name",
-                table: "Category",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Players_Name",
-                table: "Players",
+                name: "IX_Categories_Name",
+                table: "Categories",
                 column: "Name",
                 unique: true);
 
@@ -157,11 +133,6 @@ namespace QuizApp.Persistence.Migrations
                 name: "IX_Quizzes_CategoryId",
                 table: "Quizzes",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Quizzes_CreatorId",
-                table: "Quizzes",
-                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_Name",
@@ -185,10 +156,7 @@ namespace QuizApp.Persistence.Migrations
                 name: "Quizzes");
 
             migrationBuilder.DropTable(
-                name: "Category");
-
-            migrationBuilder.DropTable(
-                name: "Players");
+                name: "Categories");
         }
     }
 }

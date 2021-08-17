@@ -31,11 +31,6 @@ namespace QuizApp.Application.UnitTests
             Context.Database.EnsureCreated();
             if (!Context.Quizzes.Any())
             {
-                var player1 = new Player
-                {
-                    Name = "Tim",
-                    Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}")
-                };
 
                 var category = new Category
                 {
@@ -46,7 +41,7 @@ namespace QuizApp.Application.UnitTests
                 {
                     Id = 1,
                     Name = "Quiz 1",
-                    Creator = player1,
+                    CreatorName = "Tim",
                     Category = category,
                     NumberOfQuestions = 10
                 });

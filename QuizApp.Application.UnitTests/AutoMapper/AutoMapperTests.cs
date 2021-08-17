@@ -38,11 +38,7 @@ namespace QuizApp.Application.UnitTests.AutoMapper
                     Id = 1,
                     Name = "Sport"
                 },
-                Creator = new Player
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Tim"
-                },
+                CreatorName = "Tim",
                 StartDate = new DateTimeOffset(new DateTime(2021, 7, 31))
             };
 
@@ -52,7 +48,7 @@ namespace QuizApp.Application.UnitTests.AutoMapper
             Assert.Equal(quiz.Name, quizListDto.Name);
             Assert.Equal(quiz.NumberOfQuestions, quizListDto.NumberOfQuestions);
             Assert.Equal(quiz.Category.Name, quizListDto.Category);
-            Assert.Equal(quiz.Creator.Name, quizListDto.Creator);
+            Assert.Equal(quiz.CreatorName, quizListDto.CreatorName);
         }
     }
 }

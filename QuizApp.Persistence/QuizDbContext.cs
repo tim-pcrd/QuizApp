@@ -16,35 +16,35 @@ namespace QuizApp.Persistence
     {
         private readonly ILoggedInUserService _loggedInUserService;
 
-        public QuizDbContext(DbContextOptions options, ILoggedInUserService loggedInUserService) : base(options)
+        public QuizDbContext(DbContextOptions<QuizDbContext> options, ILoggedInUserService loggedInUserService) : base(options)
         {
             _loggedInUserService = loggedInUserService;
         }
 
-        public DbSet<Player> Players { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuizDbContext).Assembly);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            foreach(var entry in ChangeTracker.Entries<IPlayerProps>())
-            {
-                //if(entry.State == EntityState.Added)
-                //{
-                //    entry.Entity.CreatorId = _loggedInUserService.UserId;
-                //}
-            }
+        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        //{
+        //    foreach (var entry in ChangeTracker.Entries<Quiz>())
+        //    {
+        //        if (entry.State == EntityState.Added)
+        //        {
+        //            entry.Entity.CreatorName = _loggedInUserService.UserName;
+        //        }
+        //    }
 
 
-            return base.SaveChangesAsync(cancellationToken);
-        }
+        //    return base.SaveChangesAsync(cancellationToken);
+        //}
 
     }
 }
