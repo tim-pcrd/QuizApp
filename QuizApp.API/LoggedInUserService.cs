@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using QuizApp.Application.Features.Players.Queries;
 using QuizApp.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,19 @@ namespace QuizApp.API
 {
     public class LoggedInUserService : ILoggedInUserService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMediator _mediator;
 
-        public LoggedInUserService(IHttpContextAccessor httpContextAccessor)
+        public LoggedInUserService(IHttpContextAccessor httpContextAccessor, IMediator mediator)
         {
-            //TODO get username claim
-            UserName = "Tim";
+            _httpContextAccessor = httpContextAccessor;
+            _mediator = mediator;
         }
 
-        public string UserName { get; }
-
-
+        public async Task<int> GetPlayerId()
+        {
+            //TODO get username claim
+            return await _mediator.Send(new GetPlayerIdByUserNameQuery("Tim"));
+        }
     }
 }

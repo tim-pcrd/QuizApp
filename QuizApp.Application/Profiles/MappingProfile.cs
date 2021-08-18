@@ -19,7 +19,10 @@ namespace QuizApp.Application.Profiles
             CreateMap<Quiz, GetQuizzesByUserVm>()
                 .ForMember(
                     dest => dest.Category,
-                    opt => opt.MapFrom(src => src.Category.Name));
+                    opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(
+                    dest => dest.CreatorName,
+                    opt => opt.MapFrom(src => src.Creator.UserName));
             CreateMap<Category, CategoryDto>();
             CreateMap<Answer, AnswerDto>();
             CreateMap<Question, QuestionDto>()
@@ -29,8 +32,12 @@ namespace QuizApp.Application.Profiles
             CreateMap<Quiz, GetQuizDetailsVm>()
                  .ForMember(
                     dest => dest.Category,
-                    opt => opt.MapFrom(src => src.Category.Name));
+                    opt => opt.MapFrom(src => src.Category.Name))
+                 .ForMember(
+                    dest => dest.CreatorName,
+                    opt => opt.MapFrom(src => src.Creator.UserName));
             CreateMap<CreateQuizCommand, Quiz>();
+
         }
     }
 }

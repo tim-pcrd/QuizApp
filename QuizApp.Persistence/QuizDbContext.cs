@@ -26,24 +26,25 @@ namespace QuizApp.Persistence
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Player> Players { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuizDbContext).Assembly);
         }
 
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         //{
         //    foreach (var entry in ChangeTracker.Entries<Quiz>())
         //    {
         //        if (entry.State == EntityState.Added)
         //        {
-        //            entry.Entity.CreatorName = _loggedInUserService.UserName;
+        //            entry.Entity.CreatorId = await _loggedInUserService.GetPlayerId();
         //        }
         //    }
 
 
-        //    return base.SaveChangesAsync(cancellationToken);
+        //    return await base.SaveChangesAsync(cancellationToken);
         //}
 
     }

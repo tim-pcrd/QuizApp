@@ -8,6 +8,6 @@ namespace QuizApp.Application.Interfaces
 {
     public interface ILoggedInUserService
     {
-        public string UserName { get;}
+        Task<int> GetPlayerId();
     }
 }

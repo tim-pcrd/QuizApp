@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Domain.Common
 {
-    public interface IUserProp
+    public interface IPlayerProp
     {
         
     }

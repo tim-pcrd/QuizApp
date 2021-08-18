@@ -36,7 +36,8 @@ namespace QuizApp.Identity
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.User.RequireUniqueEmail = true;
-            });
+                options.SignIn.RequireConfirmedEmail = true;
+                });
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -34,6 +34,26 @@ namespace QuizApp.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Quizzes",
                 columns: table => new
                 {
@@ -41,7 +61,7 @@ namespace QuizApp.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
-                    CreatorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatorId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -55,7 +75,13 @@ namespace QuizApp.Persistence.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Quizzes_Players_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,6 +144,19 @@ namespace QuizApp.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Players_ImageId",
+                table: "Players",
+                column: "ImageId",
+                unique: true,
+                filter: "[ImageId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_UserName",
+                table: "Players",
+                column: "UserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_ImageId",
                 table: "Questions",
                 column: "ImageId",
@@ -135,6 +174,11 @@ namespace QuizApp.Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_CreatorId",
+                table: "Quizzes",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_Name",
                 table: "Quizzes",
                 column: "Name",
@@ -150,13 +194,16 @@ namespace QuizApp.Persistence.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "Images");
-
-            migrationBuilder.DropTable(
                 name: "Quizzes");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Players");
+
+            migrationBuilder.DropTable(
+                name: "Images");
         }
     }
 }

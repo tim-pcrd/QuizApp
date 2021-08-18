@@ -54,7 +54,7 @@ namespace QuizApp.Identity.Services
             var user = new ApplicationUser
             {
                 Email = request.Email,
-                EmailConfirmed = true,
+                EmailConfirmed = false,
                 UserName = request.UserName
             };
 

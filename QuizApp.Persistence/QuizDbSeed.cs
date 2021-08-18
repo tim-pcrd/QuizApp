@@ -14,6 +14,16 @@ namespace QuizApp.Persistence
                 if (!context.Quizzes.Any())
                 {
 
+                var player1 = new Player
+                {
+                    UserName = "Tim"
+                };
+
+                var player2 = new Player
+                {
+                    UserName = "Ruimtesonde"
+                };
+
 
                 var quizzes = new List<Quiz>
                     {
@@ -22,7 +32,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 1",
                             NumberOfQuestions = 10,
-                            CreatorName = "Tim",
+                            Creator = player1,
                             Category = new Category
                             {
                                 Name = "Algemeen"
@@ -305,7 +315,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 2",
                             NumberOfQuestions = 10,
-                            CreatorName = "Ruimtesonde",
+                            Creator = player2,
                             Category = new Category
                             {
                                 Name = "Sport"
@@ -588,7 +598,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 3",
                             NumberOfQuestions = 10,
-                            CreatorName = "Tim",
+                            Creator = player1,
                             Category = new Category
                             {
                                 Name = "Geschiedenis"

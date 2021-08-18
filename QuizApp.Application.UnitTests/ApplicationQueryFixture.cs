@@ -39,6 +39,16 @@ namespace QuizApp.Application.UnitTests
                     Name = "Algemeen"
                 };
 
+                var player1 = new Player
+                {
+                    UserName = "Tim"
+                };
+
+                var player2 = new Player
+                {
+                    UserName = "Ruimtesonde"
+                };
+
                 for (int i = 1; i <= 6; i++)
                 {
 
@@ -46,7 +56,7 @@ namespace QuizApp.Application.UnitTests
                     {
                         Id = i,
                         Name = $"Quiz {i}",
-                        CreatorName = i % 2 == 0 ? "Tim" : "Ruimtesonde",
+                        Creator = i % 2 == 0 ? player1 : player2,
                         Category = category,
                         Questions = GetQuestions()
                     });
