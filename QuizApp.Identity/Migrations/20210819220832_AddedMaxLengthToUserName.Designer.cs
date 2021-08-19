@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizApp.Identity;
 
 namespace QuizApp.Identity.Migrations
 {
     [DbContext(typeof(QuizIdentityDbContext))]
-    partial class QuizIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210819220832_AddedMaxLengthToUserName")]
+    partial class AddedMaxLengthToUserName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

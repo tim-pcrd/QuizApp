@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using QuizApp.Application.Interfaces.Application;
 using QuizApp.Application.Interfaces.Identity;
 using QuizApp.Application.Models.Identity;
 using QuizApp.Identity.Models;
@@ -20,23 +21,34 @@ namespace QuizApp.Identity.Services
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IValidation<RegistrationRequest> _registrationValidation;
 
-        public AuthenticationService(IConfiguration config, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AuthenticationService(
+            IConfiguration config,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IValidation<RegistrationRequest> registrationValidation)
         {
             _config = config;
             _signInManager = signInManager;
             _userManager = userManager;
+            _registrationValidation = registrationValidation;
         }
 
-        public async Task<LoginResponse> LoginAsync(LoginRequest request)
+        public async Task<(bool Success, LoginResponse Response, string Error)> LoginAsync(LoginRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user is null) return null;
+            if (user is null) return (Success:false, Response: null, Error: "Invalid login attempt.");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password,false);
+            if(!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return (Success: false, Response: null, Error:"Email address is not verified.");
+            }
 
-            if (!result.Succeeded) return null;
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+
+            if (!result.Succeeded) return (Success: false, Response: null, Error: "Invalid login attempt.");
 
             var response = new LoginResponse
             {
@@ -46,11 +58,14 @@ namespace QuizApp.Identity.Services
                 Token = GenerateToken(user)
             };
 
-            return response;
+            return (Success: true, Response: response, Error: null);
         }
 
         public async Task<(bool Success, RegistrationResponse Response, IEnumerable<string> Errors)> RegisterAsync(RegistrationRequest request)
         {
+            //TODO modify generic class, change language
+            _registrationValidation.Validate(new RegistrationRequestValidator(), request);
+
             var user = new ApplicationUser
             {
                 Email = request.Email,

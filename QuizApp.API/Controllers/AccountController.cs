@@ -24,11 +24,11 @@ namespace QuizApp.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponse>> LoginAsync(LoginRequest request)
         {
-            var response = await _authService.LoginAsync(request);
+            var result = await _authService.LoginAsync(request);
 
-            if (response is null) return Unauthorized(new ApiResponse(401));
+            if (!result.Success) return Unauthorized(new ApiResponse(401,result.Error));
 
-            return Ok(response);
+            return Ok(result.Response);
         }
 
         [HttpPost("register")]

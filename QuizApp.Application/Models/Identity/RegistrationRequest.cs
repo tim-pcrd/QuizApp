@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,15 @@ namespace QuizApp.Application.Models.Identity
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class RegistrationRequestValidator: AbstractValidator<RegistrationRequest>
+    {
+        public RegistrationRequestValidator()
+        {
+            RuleFor(x => x.UserName)
+                .NotEmpty()
+                .MaximumLength(20);
+        }
     }
 }

@@ -14,5 +14,11 @@ namespace QuizApp.Identity
         public QuizIdentityDbContext(DbContextOptions<QuizIdentityDbContext> options) : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<ApplicationUser>().Property(x => x.UserName).HasMaxLength(20);       
+        }
     }
 }

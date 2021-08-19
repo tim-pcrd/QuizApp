@@ -9,7 +9,7 @@ namespace QuizApp.Application.Interfaces.Identity
 {
     public interface IAuthenticationService
     {
-        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<(bool Success, LoginResponse Response, string Error)> LoginAsync(LoginRequest request);
         Task<(bool Success, RegistrationResponse Response, IEnumerable<string> Errors)> RegisterAsync(RegistrationRequest request);
     }
 }
