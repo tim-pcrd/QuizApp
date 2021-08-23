@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using QuizApp.Identity;
+using QuizApp.Identity.Models;
 using QuizApp.Persistence;
 using System;
 using System.Collections.Generic;
@@ -28,6 +31,9 @@ namespace QuizApp.API
                 var context = services.GetRequiredService<QuizDbContext>();
                 await context.Database.MigrateAsync();
                 await QuizDbSeed.SeedAsync(context);
+
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                await QuizIdentityDbSeed.SeedAsync(userManager);
             }
             catch(Exception ex)
             {

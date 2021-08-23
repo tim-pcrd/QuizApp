@@ -14,9 +14,9 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IValidation<CreateQuizCommand> _validation;
+        private readonly IValidation<CreateQuizCommand, CreateQuizCommandValidator> _validation;
 
-        public CreateQuizCommandHandler(IDbContext context, IMapper mapper, IValidation<CreateQuizCommand> validation)
+        public CreateQuizCommandHandler(IDbContext context, IMapper mapper, IValidation<CreateQuizCommand, CreateQuizCommandValidator> validation)
         {
             _context = context;
             _mapper = mapper;
@@ -25,7 +25,7 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
 
         public async Task<int> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
         {
-            _validation.Validate(new CreateQuizCommandValidator(), request);
+            _validation.Validate(request);
 
             var quizToCreate = _mapper.Map<Quiz>(request);
 

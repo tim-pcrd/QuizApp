@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Application.Interfaces.Application
 {
-    public interface IValidation<T> where T : class
+    public interface IValidation<TModel, TValidator> where TModel : class where TValidator: AbstractValidator<TModel>
     {
-        void Validate(AbstractValidator<T> validator, T request);
+        void Validate(TModel model);
 
-        Task ValidateAsync(AbstractValidator<T> validator, T request);
+        Task ValidateAsync(TModel model);
     }
 }

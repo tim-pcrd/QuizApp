@@ -11,24 +11,24 @@ using FluentValidation.Results;
 namespace QuizApp.Application.UnitTests.Quizzes.Commands
 {
     [Collection("ApplicationCommandCollection")]
-    public class CreateQuizTests
+    public class CreateQuizCommandTests
     {
         private readonly QuizDbContext _context;
         private IMapper _mapper;
-        private readonly Mock<IValidation<CreateQuizCommand>> _validationMock;
+        private readonly Mock<IValidation<CreateQuizCommand, CreateQuizCommandValidator>> _validationMock;
         private readonly CreateQuizCommand _createQuizCommand;
 
-        public CreateQuizTests(ApplicationCommandFixture fixture)
+        public CreateQuizCommandTests(ApplicationCommandFixture fixture)
         {
             _context = fixture.Context;
             _mapper = fixture.Mapper;
-            _validationMock = new Mock<IValidation<CreateQuizCommand>>();
+            _validationMock = new Mock<IValidation<CreateQuizCommand, CreateQuizCommandValidator>>();
             _createQuizCommand = new CreateQuizCommand { CategoryId = 1, Name = "Test Quiz", NumberOfQuestions = 10 };
         }
 
 
         [Fact]
-        public async Task CreateQuizHandler_ShouldReturn_Id()
+        public async Task CreateQuizHandler_ShouldReturnId()
         {
             var sut = new CreateQuizCommandHandler(_context, _mapper, _validationMock.Object);
 
@@ -40,7 +40,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Commands
         [Fact]
         public async Task CreateQuizHandler_ThrowsValidationException_WhenInvalid()
         {
-            _validationMock.Setup(x => x.Validate(It.IsAny<CreateQuizCommandValidator>(), _createQuizCommand))
+            _validationMock.Setup(x => x.Validate(_createQuizCommand))
                 .Throws(new ex.ValidationException(new ValidationResult()));
 
             var sut = new CreateQuizCommandHandler(_context, _mapper, _validationMock.Object);

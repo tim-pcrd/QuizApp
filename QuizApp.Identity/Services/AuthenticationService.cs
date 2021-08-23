@@ -21,13 +21,13 @@ namespace QuizApp.Identity.Services
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IValidation<RegistrationRequest> _registrationValidation;
+        private readonly IValidation<RegistrationRequest, RegistrationRequestValidator> _registrationValidation;
 
         public AuthenticationService(
             IConfiguration config,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IValidation<RegistrationRequest> registrationValidation)
+            IValidation<RegistrationRequest, RegistrationRequestValidator> registrationValidation)
         {
             _config = config;
             _signInManager = signInManager;
@@ -63,13 +63,14 @@ namespace QuizApp.Identity.Services
 
         public async Task<(bool Success, RegistrationResponse Response, IEnumerable<string> Errors)> RegisterAsync(RegistrationRequest request)
         {
-            //TODO modify generic class, change language
-            _registrationValidation.Validate(new RegistrationRequestValidator(), request);
+            //TODO change language
+            _registrationValidation.Validate(request);
 
+            //TODO email confirmation
             var user = new ApplicationUser
             {
                 Email = request.Email,
-                EmailConfirmed = false,
+                EmailConfirmed = true,
                 UserName = request.UserName
             };
 

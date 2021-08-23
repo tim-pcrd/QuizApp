@@ -11,5 +11,6 @@ namespace QuizApp.Application.Interfaces.Identity
     {
         Task<(bool Success, LoginResponse Response, string Error)> LoginAsync(LoginRequest request);
         Task<(bool Success, RegistrationResponse Response, IEnumerable<string> Errors)> RegisterAsync(RegistrationRequest request);
+
     }
 }

@@ -10,19 +10,26 @@ using ex = QuizApp.Application.Exceptions;
 
 namespace QuizApp.Application.Helpers
 {
-    public class Validation<T> : IValidation<T> where T : class
+    public class Validation<TModel, TValidator> : IValidation<TModel, TValidator>
+        where TModel: class where TValidator: AbstractValidator<TModel>, new()
     {
-        public void Validate(AbstractValidator<T> validator, T request)
+        private readonly TValidator _validator;
+
+        public Validation()
         {
-            var validationResult = validator.Validate(request);
+            _validator = new TValidator();
+        }
+
+        public void Validate(TModel model)
+        {
+            var validationResult = _validator.Validate(model);
             if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
         }
 
-        public async Task ValidateAsync(AbstractValidator<T> validator, T request)
+        public async Task ValidateAsync(TModel model)
         {
-            var validationResult = await validator.ValidateAsync(request);
+            var validationResult = await _validator.ValidateAsync(model);
             if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
         }
-
     }
 }

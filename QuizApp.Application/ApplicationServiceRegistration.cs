@@ -17,7 +17,7 @@ namespace QuizApp.Application
         {
             services.AddAutoMapper(typeof(ApplicationServiceRegistration).Assembly);
             services.AddMediatR(typeof(ApplicationServiceRegistration).Assembly);
-            services.AddTransient(typeof(IValidation<>), typeof(Validation<>));
+            services.AddTransient(typeof(IValidation<,>), typeof(Validation<,>));
             return services;
         }
     }
