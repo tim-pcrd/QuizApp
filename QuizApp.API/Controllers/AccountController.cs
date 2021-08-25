@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.API.Errors;
+using QuizApp.Application.Features.Players.Commands;
+using QuizApp.Application.Features.Players.Queries.CheckPlayerExistence;
 using QuizApp.Application.Interfaces.Identity;
 using QuizApp.Application.Models.Identity;
 using System;
@@ -15,10 +18,12 @@ namespace QuizApp.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthenticationService _authService;
+        private readonly IMediator _mediator;
 
-        public AccountController(IAuthenticationService authService)
+        public AccountController(IAuthenticationService authService, IMediator mediator)
         {
             _authService = authService;
+            _mediator = mediator;
         }
 
         [HttpPost("login")]
@@ -27,6 +32,12 @@ namespace QuizApp.API.Controllers
             var result = await _authService.LoginAsync(request);
 
             if (!result.Success) return Unauthorized(new ApiResponse(401,result.Error));
+
+            var doesPlayerExists = await _mediator.Send(new CheckPlayerExistenceQuery("Tim"));
+            if(!doesPlayerExists)
+            {
+                await _mediator.Send(new CreatePlayerCommand("Tim"));
+            }
 
             return Ok(result.Response);
         }

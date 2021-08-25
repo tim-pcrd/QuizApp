@@ -10,7 +10,5 @@ namespace QuizApp.Domain.Entities
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public int? ImageId { get; set; }
-        public Image Image { get; set; }
     }
 }
