@@ -25,7 +25,7 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails
             var quiz = await _context.Quizzes
                 .Include(x => x.Category)
                 .Include(x => x.Questions).ThenInclude(x => x.Answers)
-                .SingleOrDefaultAsync(x => x.Id == request.Id);
+                .SingleOrDefaultAsync(x => x.Id == request.Id && x.CreatedBy == request.UserName);
 
             if (quiz is null) throw new NotFoundException(nameof(Quiz), request.Id);
 

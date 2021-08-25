@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.API.Errors;
-using QuizApp.Application.Features.Players.Commands;
-using QuizApp.Application.Features.Players.Queries.CheckPlayerExistence;
 using QuizApp.Application.Interfaces.Identity;
 using QuizApp.Application.Models.Identity;
 using System;
@@ -33,11 +31,6 @@ namespace QuizApp.API.Controllers
 
             if (!result.Success) return Unauthorized(new ApiResponse(401,result.Error));
 
-            var doesPlayerExists = await _mediator.Send(new CheckPlayerExistenceQuery("Tim"));
-            if(!doesPlayerExists)
-            {
-                await _mediator.Send(new CreatePlayerCommand("Tim"));
-            }
 
             return Ok(result.Response);
         }

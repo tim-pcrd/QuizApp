@@ -29,11 +29,11 @@ namespace QuizApp.API
             try
             {
                 var context = services.GetRequiredService<QuizDbContext>();
-                await context.Database.MigrateAsync();
                 await QuizDbSeed.SeedAsync(context);
 
+                var identityContext = services.GetRequiredService<QuizIdentityDbContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                await QuizIdentityDbSeed.SeedAsync(userManager);
+                await QuizIdentityDbSeed.SeedAsync(identityContext, userManager);
             }
             catch(Exception ex)
             {

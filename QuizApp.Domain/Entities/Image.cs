@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Domain.Entities
 {
-    public class Image : BaseEntity
+    public class Image
     {
+        public int Id { get; set; }
         public string Url { get; set; }
     }
 }

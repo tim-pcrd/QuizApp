@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using QuizApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,9 @@ namespace QuizApp.Persistence
     {
         public static async Task SeedAsync(QuizDbContext context)
         {
+            await context.Database.MigrateAsync();
                 if (!context.Quizzes.Any())
                 {
-
-                var player1 = new Player
-                {
-                    UserName = "Tim"
-                };
-
-                var player2 = new Player
-                {
-                    UserName = "Ruimtesonde"
-                };
-
 
                 var quizzes = new List<Quiz>
                     {
@@ -32,7 +23,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 1",
                             NumberOfQuestions = 10,
-                            Creator = player1,
+                            CreatedBy = "Tim",
                             Category = new Category
                             {
                                 Name = "Algemeen"
@@ -315,7 +306,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 2",
                             NumberOfQuestions = 10,
-                            Creator = player2,
+                            CreatedBy = "Ruimtesonde",
                             Category = new Category
                             {
                                 Name = "Sport"
@@ -598,7 +589,7 @@ namespace QuizApp.Persistence
                         {
                             Name = "Quiz 3",
                             NumberOfQuestions = 10,
-                            Creator = player1,
+                            CreatedBy = "Tim",
                             Category = new Category
                             {
                                 Name = "Geschiedenis"

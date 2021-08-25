@@ -5,6 +5,7 @@ using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Helpers;
+using QuizApp.Application.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -15,10 +16,12 @@ namespace QuizApp.API.Controllers
     public class QuizzesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILoggedInUserService _loggedInUserService;
 
-        public QuizzesController(IMediator mediator)
+        public QuizzesController(IMediator mediator, ILoggedInUserService loggedInUserService)
         {
             _mediator = mediator;
+            _loggedInUserService = loggedInUserService;
         }
 
         [HttpGet]
@@ -27,7 +30,7 @@ namespace QuizApp.API.Controllers
 
             //TODO check userId
             var quizzes = await _mediator.Send(new GetQuizzesByUserQuery(paginationParams.PageIndex, paginationParams.PageSize, 
-                "Tim"));
+                _loggedInUserService.UserName));
 
             return Ok(quizzes);
         }
@@ -36,7 +39,7 @@ namespace QuizApp.API.Controllers
         public async Task<ActionResult<GetQuizDetailsVm>> GetQuiz(int id)
         {
             //TODO check userId
-            var quiz = await _mediator.Send(new GetQuizDetailsQuery { Id = id });
+            var quiz = await _mediator.Send(new GetQuizDetailsQuery(id, _loggedInUserService.UserName));
 
             return Ok(quiz);
         }

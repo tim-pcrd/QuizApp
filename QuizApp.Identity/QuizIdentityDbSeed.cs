@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using QuizApp.Identity.Models;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,9 @@ namespace QuizApp.Identity
 {
     public class QuizIdentityDbSeed
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
+        public static async Task SeedAsync(QuizIdentityDbContext context, UserManager<ApplicationUser> userManager)
         {
+            await context.Database.MigrateAsync();
             var user = new ApplicationUser
             {
                 Email = "picardtim@gmail.com",

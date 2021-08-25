@@ -29,7 +29,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         {
             var sut = new GetQuizDetailsQueryHandler(_context, _mapper);
 
-            await Assert.ThrowsAsync<NotFoundException>(async() => await sut.Handle(new GetQuizDetailsQuery { Id = 9999 }, CancellationToken.None));
+            await Assert.ThrowsAsync<NotFoundException>(async() => await sut.Handle(new GetQuizDetailsQuery(-1, "unknown"), CancellationToken.None));
         }
 
         [Fact]
@@ -37,10 +37,11 @@ namespace QuizApp.Application.UnitTests.Quizzes.Queries
         {
             var sut = new GetQuizDetailsQueryHandler(_context, _mapper);
 
-            var result = await sut.Handle(new GetQuizDetailsQuery { Id = 1 }, CancellationToken.None);
+            var result = await sut.Handle(new GetQuizDetailsQuery(2,"Tim"), CancellationToken.None);
 
             Assert.IsType<GetQuizDetailsVm>(result);
-            Assert.Equal(1, result.Id);
+            Assert.Equal(2, result.Id);
+            Assert.Equal("Tim", result.CreatedBy);
         }
 
 

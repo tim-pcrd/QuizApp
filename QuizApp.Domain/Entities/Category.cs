@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuizApp.Domain.Entities
 {
-    public class Category : BaseEntity
+    public class Category
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

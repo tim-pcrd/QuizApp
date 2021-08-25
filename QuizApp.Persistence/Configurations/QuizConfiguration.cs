@@ -20,12 +20,6 @@ namespace QuizApp.Persistence.Configurations
             builder.HasIndex(x => x.Name).IsUnique();
 
             builder
-                .HasOne(x => x.Creator)
-                .WithMany()
-                .HasForeignKey(x => x.CreatorId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
                 .HasOne(x => x.Category)
                 .WithMany()
                 .HasForeignKey(x => x.CategoryId)
@@ -34,6 +28,9 @@ namespace QuizApp.Persistence.Configurations
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(30);
+
+            builder.Property(x => x.CreatedBy)
+                .IsRequired();
 
             builder.Property(x => x.Status)
                 .HasDefaultValue(QuizStatus.Creating);

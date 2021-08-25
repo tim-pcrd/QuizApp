@@ -10,8 +10,8 @@ using QuizApp.Identity;
 namespace QuizApp.Identity.Migrations
 {
     [DbContext(typeof(QuizIdentityDbContext))]
-    [Migration("20210819220832_AddedMaxLengthToUserName")]
-    partial class AddedMaxLengthToUserName
+    [Migration("20210825211359_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

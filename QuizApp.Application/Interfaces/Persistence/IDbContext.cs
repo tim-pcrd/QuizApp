@@ -16,7 +16,6 @@ namespace QuizApp.Application.Interfaces.Persistence
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Player> Players { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

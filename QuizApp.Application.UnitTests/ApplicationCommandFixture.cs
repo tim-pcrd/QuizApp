@@ -41,7 +41,7 @@ namespace QuizApp.Application.UnitTests
                 {
                     Id = 1,
                     Name = "Quiz 1",
-                    Creator = new Player { UserName = "Tim" },
+                    CreatedBy = "Tim",
                     Category = category,
                     NumberOfQuestions = 10
                 });

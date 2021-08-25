@@ -10,8 +10,8 @@ using QuizApp.Persistence;
 namespace QuizApp.Persistence.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    [Migration("20210818223043_Initial")]
-    partial class Initial
+    [Migration("20210825211106_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,33 +82,6 @@ namespace QuizApp.Persistence.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("QuizApp.Domain.Entities.Player", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
-
-                    b.HasIndex("UserName")
-                        .IsUnique();
-
-                    b.ToTable("Players");
-                });
-
             modelBuilder.Entity("QuizApp.Domain.Entities.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -148,11 +121,12 @@ namespace QuizApp.Persistence.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreationDate")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -174,8 +148,6 @@ namespace QuizApp.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CreatorId");
-
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -189,16 +161,6 @@ namespace QuizApp.Persistence.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("QuizApp.Domain.Entities.Player", b =>
-                {
-                    b.HasOne("QuizApp.Domain.Entities.Image", "Image")
-                        .WithOne()
-                        .HasForeignKey("QuizApp.Domain.Entities.Player", "ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("QuizApp.Domain.Entities.Question", b =>
@@ -225,15 +187,7 @@ namespace QuizApp.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("QuizApp.Domain.Entities.Player", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("QuizApp.Domain.Entities.Question", b =>
