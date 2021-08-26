@@ -22,12 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuizApp.Application\QuizApp.Application.csproj" />
-    <ProjectReference Include="..\QuizApp.Persistence\QuizApp.Persistence.csproj" />
+    <Folder Include="Validations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validations\" />
+    <ProjectReference Include="..\..\QuizApp.Application\QuizApp.Application.csproj" />
+    <ProjectReference Include="..\..\QuizApp.Persistence\QuizApp.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
