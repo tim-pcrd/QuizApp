@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using QuizApp.Application.Dtos;
+using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
@@ -31,6 +32,9 @@ namespace QuizApp.Application.Profiles
                     dest => dest.Category,
                     opt => opt.MapFrom(src => src.Category.Name));
             CreateMap<CreateQuizCommand, Quiz>();
+
+            CreateMap<CreateQuestionCommand, Question>();
+            CreateMap<CreateAnswerDto, Answer>();
 
         }
     }
