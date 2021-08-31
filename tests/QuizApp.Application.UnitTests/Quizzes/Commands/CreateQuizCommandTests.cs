@@ -7,6 +7,7 @@ using QuizApp.Persistence;
 using System.Threading.Tasks;
 using Xunit;
 using FluentValidation.Results;
+using System.Collections.Generic;
 
 namespace QuizApp.Application.UnitTests.Quizzes.Commands
 {
@@ -41,7 +42,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Commands
         public async Task CreateQuizHandler_ThrowsValidationException_WhenInvalid()
         {
             _validationMock.Setup(x => x.Validate(_createQuizCommand))
-                .Throws(new ex.ValidationException(new ValidationResult()));
+                .Throws(new ex.ValidationException(new List<string>()));
 
             var sut = new CreateQuizCommandHandler(_context, _mapper, _validationMock.Object);
 

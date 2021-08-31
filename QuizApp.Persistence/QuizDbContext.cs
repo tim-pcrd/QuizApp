@@ -21,30 +21,29 @@ namespace QuizApp.Persistence
             _loggedInUserService = loggedInUserService;
         }
 
-        public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<Question> Questions { get; set; }
-        public DbSet<Answer> Answers { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Quiz> Quizzes { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuizDbContext).Assembly);
         }
 
-        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-        //    foreach (var entry in ChangeTracker.Entries<Quiz>())
-        //    {
-        //        if (entry.State == EntityState.Added)
-        //        {
-        //            entry.Entity.CreatorId = await _loggedInUserService.GetPlayerId();
-        //        }
-        //    }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<UserData>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedBy = _loggedInUserService.UserName;
+                }
+            }
 
-
-        //    return await base.SaveChangesAsync(cancellationToken);
-        //}
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
     }
 }

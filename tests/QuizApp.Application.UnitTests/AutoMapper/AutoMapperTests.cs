@@ -19,7 +19,7 @@ namespace QuizApp.Application.UnitTests.AutoMapper
         {
             var configurationProvider = new MapperConfiguration(config =>
             {
-                config.AddProfile<MappingProfile>();
+                config.AddProfile<QuizMappingProfile>();
             });
 
             _mapper = configurationProvider.CreateMapper();

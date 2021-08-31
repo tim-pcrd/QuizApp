@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using QuizApp.Application.Exceptions;
 using QuizApp.Application.Interfaces.Application;
 using QuizApp.Application.Interfaces.Persistence;
 using QuizApp.Domain.Entities;
@@ -29,13 +31,19 @@ namespace QuizApp.Application.Features.Questions.Commands.CreateQuestion
         {
             _validation.Validate(request);
 
+            var quiz = await _context.Quizzes.FindAsync(request.QuizId)
+                ?? throw new ValidationException(new List<string> { "QuizId bestaat niet." });
+
+            var numberOfQuestions = await _context.Questions.CountAsync(x => x.QuizId == request.QuizId);
+            if (numberOfQuestions == quiz.NumberOfQuestions)
+                throw new ValidationException(new List<string> { $"Quiz bevat al het maximaal ({quiz.NumberOfQuestions}) aantal vragen." });
+
             var question = _mapper.Map<Question>(request);
 
             _context.Questions.Add(question);
             await _context.SaveChangesAsync(cancellationToken);
 
             return question.Id;
-
         }
     }
 

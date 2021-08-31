@@ -23,13 +23,8 @@ namespace QuizApp.Application.Helpers
         public void Validate(TModel model)
         {
             var validationResult = _validator.Validate(model);
-            if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
-        }
-
-        public async Task ValidateAsync(TModel model)
-        {
-            var validationResult = await _validator.ValidateAsync(model);
-            if (!validationResult.IsValid) throw new ex.ValidationException(validationResult);
+            if (!validationResult.IsValid) 
+                throw new ex.ValidationException(validationResult.Errors.Select(x => x.ErrorMessage));
         }
     }
 }

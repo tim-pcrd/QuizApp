@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using QuizApp.API.Errors;
 using QuizApp.API.Middleware;
 using QuizApp.Application;
 using QuizApp.Application.Interfaces;
+using QuizApp.Application.Interfaces.Persistence;
 using QuizApp.Identity;
 using QuizApp.Persistence;
 using System;
@@ -40,6 +42,7 @@ namespace QuizApp.API
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressMapClientErrors = true;
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             //services.Configure<JsonOptions>(options =>
@@ -75,13 +78,13 @@ namespace QuizApp.API
            
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-            app.UseStatusCodePages(async context =>
-            {
-                context.HttpContext.Response.ContentType = "application/json";
+            //app.UseStatusCodePages(async context =>
+            //{
+            //    context.HttpContext.Response.ContentType = "application/json";
 
-                await context.HttpContext.Response.WriteAsync(
-                    JsonSerializer.Serialize(new ApiResponse(context.HttpContext.Response.StatusCode)));
-            });
+            //    await context.HttpContext.Response.WriteAsync(
+            //        JsonSerializer.Serialize(new ApiResponse(context.HttpContext.Response.StatusCode)));
+            //});
 
             app.UseHttpsRedirection();
 

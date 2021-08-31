@@ -25,6 +25,7 @@ namespace QuizApp.Application.UnitTests.Questions
             var command = new CreateQuestionCommand
             {
                 Text = "dit is een vraag",
+                QuizId = 1,
                 Answers = new List<CreateAnswerDto>
                 {
                     new CreateAnswerDto
@@ -54,35 +55,60 @@ namespace QuizApp.Application.UnitTests.Questions
             result.ShouldNotHaveAnyValidationErrors();
         }
 
+        [Fact]
+        public void Should_HaveError_WhenText_HasMoreThan500characters()
+        {
+            var command = new CreateQuestionCommand { Text = new string('x', 501) };
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+        }
+
         [Theory]
-        [ClassData(typeof(QuestionTextGenerator))]
-        public void Should_HaveError_WhenTextIsInvalid(string text)
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void Should_HaveError_WhenText_IsEmpty(string text)
+        {
+            var command = new CreateQuestionCommand { Text = text };
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void Should_HaveError_WhenQuizId_IsLessThan1(int id)
+        {
+            var command = new CreateQuestionCommand { QuizId = id };
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+        }
+
+        [Fact]
+        public void Should_HaveError_WhenOneOfAnswersText_IsLongerThan50Characters()
+        {
+            var command = new CreateQuestionCommand 
+            { 
+                Answers = new List<CreateAnswerDto> 
+                {
+                    new CreateAnswerDto{Text = new string('x',51)}
+                } 
+            };
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void Should_HaveError_WhenOneOfAnswersText_IsEmpty(string text)
         {
             var command = new CreateQuestionCommand
             {
-                Text = text,
                 Answers = new List<CreateAnswerDto>
                 {
-                    new CreateAnswerDto
-                    {
-                        Text = "dit is een antwoord",
-                        Correct = true
-                    },
-                     new CreateAnswerDto
-                    {
-                        Text = "dit is een antwoord",
-                        Correct = false
-                    },
-                      new CreateAnswerDto
-                    {
-                        Text = "dit is een antwoord",
-                        Correct = false
-                    },
-                       new CreateAnswerDto
-                    {
-                        Text = "dit is een antwoord",
-                        Correct = false
-                    }
+                    new CreateAnswerDto{Text = text}
                 }
             };
             var result = validator.TestValidate(command);
@@ -90,20 +116,52 @@ namespace QuizApp.Application.UnitTests.Questions
         }
 
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("fjfjeizlksssdfzefzpoefzeokpzokfpzjbpobpozpzbpozpfozkefpozekfpozokefpozkefpzkpofezefzf")]
-        public void Should_HaveError_WhenOneOfAnswersIsInvalid(string text)
+
+        [Fact]
+        public void Should_HaveError_WhenMultipleAnswers_AreTrue()
         {
             var command = new CreateQuestionCommand
             {
-                Text = "dit is een vraag",
                 Answers = new List<CreateAnswerDto>
                 {
                     new CreateAnswerDto
                     {
-                        Text = text,
+                        Text = "dit is een antwoord",
                         Correct = true
+                    },
+                     new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = true
+                    },
+                      new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false
+                    },
+                       new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false
+                    }
+                }
+            };
+
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Answers);
+        }
+
+        [Fact]
+        public void Should_HaveError_WhenAllAnswers_AreFalse()
+        {
+            var command = new CreateQuestionCommand
+            {
+                Answers = new List<CreateAnswerDto>
+                {
+                    new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false
                     },
                      new CreateAnswerDto
                     {
@@ -124,23 +182,10 @@ namespace QuizApp.Application.UnitTests.Questions
             };
 
             var result = validator.TestValidate(command);
-            result.ShouldHaveValidationErrorFor("Answers[0].Text");
+            result.ShouldHaveValidationErrorFor(x => x.Answers);
         }
     }
 
    
 
-    public class QuestionTextGenerator : IEnumerable<object[]>
-    {
-
-        private readonly List<object[]> _data = new List<object[]>
-        {
-            new object[] {""},
-            new object[] {new string('x',501)}
-        };
-
-        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
 }

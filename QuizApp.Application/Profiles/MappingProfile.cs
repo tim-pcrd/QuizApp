@@ -17,24 +17,9 @@ namespace QuizApp.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<Quiz, GetQuizzesByUserVm>()
-                .ForMember(
-                    dest => dest.Category,
-                    opt => opt.MapFrom(src => src.Category.Name));
-            CreateMap<Category, CategoryDto>();
-            CreateMap<Answer, AnswerDto>();
-            CreateMap<Question, QuestionDto>()
-                .ForMember(
-                    dest => dest.ImageUrl,
-                    opt => opt.MapFrom(src => src.Image.Url));
-            CreateMap<Quiz, GetQuizDetailsVm>()
-                 .ForMember(
-                    dest => dest.Category,
-                    opt => opt.MapFrom(src => src.Category.Name));
-            CreateMap<CreateQuizCommand, Quiz>();
+         
+            
 
-            CreateMap<CreateQuestionCommand, Question>();
-            CreateMap<CreateAnswerDto, Answer>();
 
         }
     }

@@ -60,7 +60,7 @@ namespace QuizApp.Application.UnitTests
 
             var configurationProvider = new MapperConfiguration(config =>
             {
-                config.AddProfile<MappingProfile>();
+                config.AddProfile<QuizMappingProfile>();
             });
 
             Mapper = configurationProvider.CreateMapper();

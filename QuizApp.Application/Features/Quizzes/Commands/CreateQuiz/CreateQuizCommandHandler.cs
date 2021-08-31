@@ -7,6 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using QuizApp.Application.Helpers;
 using QuizApp.Application.Interfaces.Application;
+using System;
+using Microsoft.EntityFrameworkCore;
+using QuizApp.Application.Exceptions;
+using System.Collections.Generic;
 
 namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
 {
@@ -23,9 +27,14 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
             _validation = validation;
         }
 
+       
+
         public async Task<int> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
         {
             _validation.Validate(request);
+
+            var nameExists = await _context.Quizzes.AnyAsync(x => x.Name == request.Name);
+            if (nameExists) throw new ValidationException(new List<string> { "Naam bestaat al" });
 
             var quizToCreate = _mapper.Map<Quiz>(request);
 

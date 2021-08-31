@@ -12,9 +12,9 @@ namespace QuizApp.Application.Exceptions
     {
         public IEnumerable<string> ValidationErrors { get; set; }
 
-        public ValidationException(ValidationResult validationResult)
+        public ValidationException(IEnumerable<string> validationErrors)
         {
-            ValidationErrors = validationResult.Errors.Select(x => x.ErrorMessage);
+            ValidationErrors = validationErrors;
         }
     }
 }
