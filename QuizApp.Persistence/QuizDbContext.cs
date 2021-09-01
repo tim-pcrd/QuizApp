@@ -39,6 +39,7 @@ namespace QuizApp.Persistence
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedBy = _loggedInUserService.UserName;
+                    entry.Entity.CreatedAt = DateTimeOffset.Now;
                 }
             }
 

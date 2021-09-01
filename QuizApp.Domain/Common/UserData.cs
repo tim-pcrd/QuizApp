@@ -9,6 +9,6 @@ namespace QuizApp.Domain.Common
     public class UserData
     {
         public string CreatedBy { get; set; }
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

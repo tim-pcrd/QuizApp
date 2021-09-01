@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
+using QuizApp.Application.Features.Questions.Commands.DeleteQuestion;
 using QuizApp.Application.Features.Questions.Commands.UpdateQuestion;
 using QuizApp.Application.Interfaces;
 using System;
@@ -37,6 +38,14 @@ namespace QuizApp.API.Controllers
         {
             command.Id = id;
             await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _mediator.Send(new DeleteQuestionCommand(id));
 
             return NoContent();
         }

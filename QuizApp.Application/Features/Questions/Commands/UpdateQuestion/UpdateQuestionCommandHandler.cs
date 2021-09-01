@@ -28,8 +28,15 @@ namespace QuizApp.Application.Features.Questions.Commands.UpdateQuestion
         }
         public async Task<Unit> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
         {
+            _validation.Validate(request);
+
             var question = await _context.Questions.Include(x => x.Answers).FirstOrDefaultAsync(x => x.Id == request.Id)
                 ?? throw new NotFoundException(nameof(Question), request.Id);
+
+            if(request.Answers.Any(x => !question.Answers.Select(y => y.Id).Contains(x.Id)))
+            {
+                throw new ValidationException(new List<string> { "1 of meerdere anwoorden behoren niet tot deze vraag." });
+            }
 
             _mapper.Map(request, question);
 

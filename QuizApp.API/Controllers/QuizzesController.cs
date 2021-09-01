@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.API.Helpers;
 using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
+using QuizApp.Application.Features.Quizzes.Commands.DeleteQuiz;
+using QuizApp.Application.Features.Quizzes.Commands.UpdateQuiz;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Helpers;
@@ -25,11 +27,11 @@ namespace QuizApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Pagination<GetQuizzesByUserVm>>> GetQuizzes([FromQuery]PaginationParams paginationParams)
+        public async Task<ActionResult<Pagination<GetQuizzesByUserVm>>> GetQuizzes([FromQuery] PaginationParams paginationParams)
         {
 
             //TODO check userId
-            var quizzes = await _mediator.Send(new GetQuizzesByUserQuery(paginationParams.PageIndex, paginationParams.PageSize, 
+            var quizzes = await _mediator.Send(new GetQuizzesByUserQuery(paginationParams.PageIndex, paginationParams.PageSize,
                 _loggedInUserService.UserName));
 
             return Ok(quizzes);
@@ -45,11 +47,27 @@ namespace QuizApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuiz(CreateQuizCommand createQuizCommand)
+        public async Task<IActionResult> Create(CreateQuizCommand createQuizCommand)
         {
             var response = await _mediator.Send(createQuizCommand);
 
             return Ok(response);
-        } 
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(UpdateQuizCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _mediator.Send(new DeleteQuizCommand(id));
+
+            return NoContent();
+        }
     }
 }
