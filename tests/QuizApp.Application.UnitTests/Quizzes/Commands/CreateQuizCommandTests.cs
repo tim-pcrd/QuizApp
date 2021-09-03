@@ -11,8 +11,7 @@ using System.Collections.Generic;
 
 namespace QuizApp.Application.UnitTests.Quizzes.Commands
 {
-    [Collection("ApplicationCommandCollection")]
-    public class CreateQuizCommandTests
+    public class CreateQuizCommandTests : IClassFixture<ApplicationCommandFixture>
     {
         private readonly QuizDbContext _context;
         private IMapper _mapper;
@@ -29,7 +28,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Commands
 
 
         [Fact]
-        public async Task CreateQuizHandler_ShouldReturnId()
+        public async Task CreateQuizHandler_ReturnsId()
         {
             var sut = new CreateQuizCommandHandler(_context, _mapper, _validationMock.Object);
 

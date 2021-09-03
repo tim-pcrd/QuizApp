@@ -28,7 +28,6 @@ namespace QuizApp.Application.Features.Quizzes.Commands.CreateQuiz
         }
 
        
-
         public async Task<int> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
         {
             _validation.Validate(request);

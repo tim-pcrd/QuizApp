@@ -17,8 +17,7 @@ using Xunit;
 
 namespace QuizApp.Application.UnitTests.Questions.Commands
 {
-    [Collection("ApplicationCommandCollection")]
-    public class CreateQuestionCommandTests
+    public class CreateQuestionCommandTests : IClassFixture<ApplicationCommandFixture>
     {
         private readonly QuizDbContext context;
         private readonly IMapper mapper;
@@ -34,7 +33,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
         }
 
         [Fact]
-        public async Task CreateQuestionHandler_ShouldReturnId()
+        public async Task CreateQuestionHandler_ReturnsId()
         {
             var command = new CreateQuestionCommand
             {
@@ -73,7 +72,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
         {
             var command = new CreateQuestionCommand
             {
-                QuizId = 2,
+                QuizId = 4,
                 Text = "Dit is een vraag",
             };
 
