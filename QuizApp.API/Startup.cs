@@ -63,6 +63,14 @@ namespace QuizApp.API
 
             services.AddHttpContextAccessor();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("appPolicy", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,17 +86,19 @@ namespace QuizApp.API
            
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-            //app.UseStatusCodePages(async context =>
-            //{
-            //    context.HttpContext.Response.ContentType = "application/json";
+            app.UseStatusCodePages(async context =>
+            {
+                context.HttpContext.Response.ContentType = "application/json";
 
-            //    await context.HttpContext.Response.WriteAsync(
-            //        JsonSerializer.Serialize(new ApiResponse(context.HttpContext.Response.StatusCode)));
-            //});
+                await context.HttpContext.Response.WriteAsync(
+                    JsonSerializer.Serialize(new ApiResponse(context.HttpContext.Response.StatusCode)));
+            });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("appPolicy");
 
             app.UseAuthorization();
 

@@ -1,0 +1,13 @@
+@use "../../../styles/custom" as *;
+@use "../../../styles/components/mixins" as *;
+
+.navbar {
+  @include gradient;
+
+  li {
+
+    a{
+      color: $white !important;
+    }
+  }
+}

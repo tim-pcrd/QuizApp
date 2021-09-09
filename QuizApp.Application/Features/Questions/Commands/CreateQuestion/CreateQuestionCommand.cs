@@ -35,8 +35,6 @@ namespace QuizApp.Application.Features.Questions.Commands.CreateQuestion
                     .WithMessage("Elke vraag moet 1 juist antwoord en 3 foute antwoorden hebben")
                 .ForEach(x => x.SetValidator(new CreateAnswerDtoValidator()));
 
-           
-
         }
     }
 
