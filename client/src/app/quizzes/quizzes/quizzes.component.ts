@@ -14,10 +14,17 @@ export class QuizzesComponent implements OnInit {
   constructor(private quizService: QuizService) { }
 
   ngOnInit(): void {
-    this.quizService.getQuizzes().subscribe(quizzes => {
-      this.quizzes = quizzes;
-      console.log(quizzes);
-    },err => console.log(err));
+    this.getQuizzesFromService(1,1);
   }
 
+  onPageChanged(event:{page:number; itemsPerPage:number;}){
+    this.getQuizzesFromService(event.page, event.itemsPerPage);
+  }
+
+  getQuizzesFromService( pageIndex: number, pageSize: number){
+    this.quizService.getQuizzes(pageIndex, pageSize).subscribe(data => {
+      this.quizzes = data;
+      this.quizzes.count=50;
+    },err => console.log(err));
+  }
 }

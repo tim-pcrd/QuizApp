@@ -10,6 +10,10 @@ describe('QuizService', () => {
   let httpMock: HttpTestingController;
   let baseUrl = environment.apiUrl;
 
+
+  let quizServiceStub: Partial<QuizService> = {
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

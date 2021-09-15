@@ -27,6 +27,7 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser
         {
             var quizzes = await _context.Quizzes
                 .Where(x => x.CreatedBy == request.UserName)
+                .OrderByDescending(x => x.CreatedAt)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Include(x => x.Category)

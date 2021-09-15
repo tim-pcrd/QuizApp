@@ -2,8 +2,6 @@
 @use "./custom";
 
 @use "./components/buttons";
-@use "./components/mixins" as mixins;
+@use "./components/mixins";
 
-.navbar {
-  @include mixins.gradient;
-}
+

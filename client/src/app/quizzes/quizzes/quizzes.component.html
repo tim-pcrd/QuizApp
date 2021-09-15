@@ -2,4 +2,14 @@
   <p *ngFor="let quiz of quizzes.data">
     {{quiz.name}}
   </p>
+  <pagination
+    [totalItems]="quizzes.count"
+    [itemsPerPage]="quizzes.pageSize"
+    [maxSize]="5"
+    [boundaryLinks]="true"
+    [firstText]="'<<'"
+    [lastText]="'>>'"
+    [nextText]="'>'"
+    [previousText]="'<'"
+    (pageChanged)="onPageChanged($event)" ></pagination>
 </ng-container>
