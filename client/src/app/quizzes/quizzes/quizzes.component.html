@@ -1,8 +1,32 @@
 <ng-container *ngIf="quizzes">
-  <p *ngFor="let quiz of quizzes.data">
-    {{quiz.name}}
-  </p>
-  <pagination
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Aangemaakt op</th>
+        <th scope="col">Naam</th>
+        <th scope="col">Aantal vragen</th>
+        <th scope="col">Actief</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr *ngFor="let quiz of quizzes.data" (click)="onRowClicked(quiz.id)">
+        <td>{{quiz.createdAt | date:'dd/MM/yyyy'}}</td>
+        <td>{{quiz.name}}</td>
+        <td>{{quiz.numberOfQuestions}}</td>
+        <td>{{quiz.startDate ? 'Ja' : 'Nee'}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-end">
+    <span class="">
+      Resultaten {{((quizzes.pageIndex-1) * quizzes.pageSize) + 1}}-
+      {{(quizzes.pageSize * quizzes.pageIndex) <= quizzes.count ? (quizzes.pageSize * quizzes.pageIndex) : quizzes.count}}
+      van {{quizzes.count}}
+    </span>
+  </div>
+  <pagination class="justify-content-center"
     [totalItems]="quizzes.count"
     [itemsPerPage]="quizzes.pageSize"
     [maxSize]="5"
@@ -11,5 +35,9 @@
     [lastText]="'>>'"
     [nextText]="'>'"
     [previousText]="'<'"
-    (pageChanged)="onPageChanged($event)" ></pagination>
+    (pageChanged)="onPageChanged($event)" >
+  </pagination>
+
+
 </ng-container>
+
