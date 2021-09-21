@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuizzesComponent } from './quizzes/quizzes.component';
+import { QuizzesComponent } from './quizzes.component';
 import { SharedModule } from '../shared/shared.module';
 import { QuizzesRoutingModule } from './quizzes-routing.module';
+import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 
 
 
 @NgModule({
   declarations: [
-    QuizzesComponent
+    QuizzesComponent,
+    QuizDetailsComponent
   ],
   imports: [
     SharedModule,

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IPagination } from 'src/app/shared/models/pagination';
 import { IQuiz } from 'src/app/shared/models/quiz';
-import { QuizService } from '../service/quiz.service';
+import { QuizService } from './service/quiz.service';
 
 @Component({
   selector: 'app-quizzes',
@@ -11,7 +12,7 @@ import { QuizService } from '../service/quiz.service';
 export class QuizzesComponent implements OnInit {
   quizzes: IPagination<IQuiz[]> | undefined;
 
-  constructor(private quizService: QuizService) { }
+  constructor(private quizService: QuizService, private router: Router) { }
 
   ngOnInit(): void {
     this.getQuizzesFromService(1,10);
@@ -28,6 +29,6 @@ export class QuizzesComponent implements OnInit {
   }
 
   onRowClicked(quizId: number){
-    console.log(quizId);
+    this.router.navigateByUrl(`/quizzen/${quizId}`)
   }
 }

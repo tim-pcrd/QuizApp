@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { IPagination } from 'src/app/shared/models/pagination';
-import { IQuiz } from 'src/app/shared/models/quiz';
+import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
 
@@ -20,6 +19,11 @@ export class QuizService {
       .set('pageSize', pageSize.toString());
 
     return this.http.get<IPagination<IQuiz[]>>(this.baseUrl + 'quizzes', {params})
+      .pipe(tap(x => console.log(x)));
+  }
+
+  getQuizDetails(quizId: number) {
+    return this.http.get<IQuizDetails>(`${this.baseUrl}/quizzes/${quizId}`)
       .pipe(tap(x => console.log(x)));
   }
 }

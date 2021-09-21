@@ -1,9 +1,10 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { QuizService } from '../service/quiz.service';
+import { QuizService } from './service/quiz.service';
 
 import { QuizzesComponent } from './quizzes.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('QuizzesComponent', () => {
   let component: QuizzesComponent;
@@ -13,7 +14,7 @@ describe('QuizzesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, RouterTestingModule],
       declarations: [ QuizzesComponent ],
       providers: [
         {provides: QuizService, useClass: MockQuizService}

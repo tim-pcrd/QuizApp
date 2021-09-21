@@ -2,7 +2,9 @@
 
 tbody tr:hover {
   -webkit-box-shadow: 2px 4px 15px 4px #595959;
-box-shadow: 2px 4px 15px 4px #595959;
+  box-shadow: 2px 4px 15px 4px #595959;
+  cursor:pointer;
+
   td{
     border: none;
   }
