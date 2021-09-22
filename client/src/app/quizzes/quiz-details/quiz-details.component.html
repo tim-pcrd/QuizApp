@@ -1,1 +1,6 @@
-<p>quiz-details works!</p>
+<div *ngIf="quiz">
+  <h3>{{quiz.name}}</h3>
+  <div *ngFor="let question of quiz.questions">
+    <app-question [question]="question"></app-question>
+  </div>
+</div>

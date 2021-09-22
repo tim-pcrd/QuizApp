@@ -1,0 +1,6 @@
+<div *ngIf="question">
+  <p>{{question.text}}</p>
+  <p *ngFor="let answer of question.answers">
+    {{answer.text}}
+  </p>
+</div>

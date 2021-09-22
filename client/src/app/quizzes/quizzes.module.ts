@@ -4,13 +4,15 @@ import { QuizzesComponent } from './quizzes.component';
 import { SharedModule } from '../shared/shared.module';
 import { QuizzesRoutingModule } from './quizzes-routing.module';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
+import { QuestionComponent } from './quiz-details/question/question.component';
 
 
 
 @NgModule({
   declarations: [
     QuizzesComponent,
-    QuizDetailsComponent
+    QuizDetailsComponent,
+    QuestionComponent
   ],
   imports: [
     SharedModule,

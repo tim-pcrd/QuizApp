@@ -23,7 +23,7 @@ export class QuizService {
   }
 
   getQuizDetails(quizId: number) {
-    return this.http.get<IQuizDetails>(`${this.baseUrl}/quizzes/${quizId}`)
+    return this.http.get<IQuizDetails>(`${this.baseUrl}quizzes/${quizId}`)
       .pipe(tap(x => console.log(x)));
   }
 }
