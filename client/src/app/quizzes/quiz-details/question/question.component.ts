@@ -1,6 +1,7 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { moveItemsInFormArray } from 'src/app/shared/functions/form-functions';
 import { IQuestion } from 'src/app/shared/models/question';
 import * as _ from "underscore";
 
@@ -23,6 +24,7 @@ export class QuestionComponent implements OnInit {
       order: [this.question?.order],
       answers: this.fb.array([])
     });
+    this.addAnswers();
     console.log(this.question);
   }
 
@@ -45,15 +47,22 @@ export class QuestionComponent implements OnInit {
     this.editMode = false;
   }
 
+  get answers() {
+    return this.quizForm.get('answers') as FormArray;
+  }
+
+
   drop(event: CdkDragDrop<string[]>) {
 
-    moveItemInArray(this.question.answers, event.previousIndex, event.currentIndex);
-    this.question.answers = this.question.answers.map((answer,index) => {
-      answer.order = index+1;
-      return answer;
-    })!
+    moveItemsInFormArray(this.answers, event.previousIndex, event.currentIndex);
 
-    console.log(this.question.answers);
+    console.log(this.answers.value);
+
+    for(let [index, control] of this.answers.controls.entries()){
+      control.patchValue({order: index + 1})
+    }
+
+    console.log(this.answers.value);
   }
 
   onFormSubmit() {
