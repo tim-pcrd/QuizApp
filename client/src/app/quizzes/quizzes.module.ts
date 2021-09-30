@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { QuizzesRoutingModule } from './quizzes-routing.module';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 import { QuestionComponent } from './quiz-details/question/question.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 
@@ -12,11 +13,13 @@ import { QuestionComponent } from './quiz-details/question/question.component';
   declarations: [
     QuizzesComponent,
     QuizDetailsComponent,
-    QuestionComponent
+    QuestionComponent,
+
   ],
   imports: [
     SharedModule,
-    QuizzesRoutingModule
+    QuizzesRoutingModule,
+    DragDropModule
   ]
 })
 export class QuizzesModule { }

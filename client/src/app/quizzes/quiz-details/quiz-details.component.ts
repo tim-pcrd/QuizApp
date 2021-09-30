@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { IQuizDetails } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
+import * as _ from "underscore";
 
 @Component({
   selector: 'app-quiz-details',
@@ -25,6 +26,11 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     )
     .subscribe(quiz => {
       this.quiz = quiz;
+      this.quiz.questions = _.sortBy(this.quiz.questions, x => x.order);
+      for(let question of this.quiz.questions){
+        question.answers = _.sortBy(question.answers, x => x.order);
+      }
+
     });
   }
 

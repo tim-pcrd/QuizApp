@@ -1,6 +1,7 @@
 <div *ngIf="quiz">
-  <h3>{{quiz.name}}</h3>
+  <h3 class="mb-5">{{quiz.name}}</h3>
   <div *ngFor="let question of quiz.questions">
     <app-question [question]="question"></app-question>
   </div>
+
 </div>

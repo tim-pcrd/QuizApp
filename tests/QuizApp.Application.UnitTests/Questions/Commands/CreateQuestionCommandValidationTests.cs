@@ -13,10 +13,12 @@ namespace QuizApp.Application.UnitTests.Questions
     public class CreateQuestionCommandValidationTests
     {
         private CreateQuestionCommandValidator validator;
+        private CreateAnswerDtoValidator answerValidator;
 
         public CreateQuestionCommandValidationTests()
         {
             validator = new CreateQuestionCommandValidator();
+            answerValidator = new CreateAnswerDtoValidator();
         }
 
         [Fact]
@@ -31,22 +33,26 @@ namespace QuizApp.Application.UnitTests.Questions
                     new CreateAnswerDto
                     {
                         Text = "dit is een antwoord",
-                        Correct = true
+                        Correct = true,
+                        Order = 1
                     },
                      new CreateAnswerDto
                     {
                         Text = "dit is een antwoord",
-                        Correct = false
+                        Correct = false,
+                        Order = 2
                     },
                       new CreateAnswerDto
                     {
                         Text = "dit is een antwoord",
-                        Correct = false
+                        Correct = false,
+                        Order = 3
                     },
                        new CreateAnswerDto
                     {
                         Text = "dit is een antwoord",
-                        Correct = false
+                        Correct = false,
+                        Order = 4
                     }
                 }
             };
@@ -87,14 +93,9 @@ namespace QuizApp.Application.UnitTests.Questions
         [Fact]
         public void Should_HaveError_WhenOneOfAnswersText_IsLongerThan50Characters()
         {
-            var command = new CreateQuestionCommand 
-            { 
-                Answers = new List<CreateAnswerDto> 
-                {
-                    new CreateAnswerDto{Text = new string('x',51)}
-                } 
-            };
-            var result = validator.TestValidate(command);
+            var answer = new CreateAnswerDto { Text = new string('x', 51) };
+
+            var result = answerValidator.TestValidate(answer);
             result.ShouldHaveValidationErrorFor(x => x.Text);
         }
 
@@ -104,14 +105,10 @@ namespace QuizApp.Application.UnitTests.Questions
         [InlineData(null)]
         public void Should_HaveError_WhenOneOfAnswersText_IsEmpty(string text)
         {
-            var command = new CreateQuestionCommand
-            {
-                Answers = new List<CreateAnswerDto>
-                {
-                    new CreateAnswerDto{Text = text}
-                }
-            };
-            var result = validator.TestValidate(command);
+
+            var answer = new CreateAnswerDto { Text = text };
+
+            var result = answerValidator.TestValidate(answer);
             result.ShouldHaveValidationErrorFor(x => x.Text);
         }
 
@@ -148,7 +145,8 @@ namespace QuizApp.Application.UnitTests.Questions
             };
 
             var result = validator.TestValidate(command);
-            result.ShouldHaveValidationErrorFor(x => x.Answers);
+            result.ShouldHaveValidationErrorFor(x => x.Answers)
+                .WithErrorMessage("Elke vraag moet 1 juist antwoord en 3 foute antwoorden hebben");
         }
 
         [Fact]
@@ -182,7 +180,52 @@ namespace QuizApp.Application.UnitTests.Questions
             };
 
             var result = validator.TestValidate(command);
-            result.ShouldHaveValidationErrorFor(x => x.Answers);
+            result.ShouldHaveValidationErrorFor(x => x.Answers)
+                 .WithErrorMessage("Elke vraag moet 1 juist antwoord en 3 foute antwoorden hebben");
+        }
+
+        [Theory]
+        [InlineData(0,0,0,0)]
+        [InlineData(1,2,3,5)]
+        public void Should_HaveError_WhenAnswers_DontHaveOrder1To4(int a, int b, int c, int d)
+        {
+            var command = new CreateQuestionCommand
+            {
+                Text = "dit is een vraag",
+                QuizId = 1,
+                Answers = new List<CreateAnswerDto>
+                {
+                    new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = true,
+                        Order = a
+                    },
+                     new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false,
+                        Order = b
+                    },
+                      new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false,
+                        Order = c
+                    },
+                       new CreateAnswerDto
+                    {
+                        Text = "dit is een antwoord",
+                        Correct = false,
+                        Order = d
+                    }
+                }
+            };
+
+            var result = validator.TestValidate(command);
+            result.ShouldHaveValidationErrorFor(x => x.Answers)
+                .WithErrorMessage("Elke antwoord moet een uniek volgordenummer hebben tusen 1 en 4");
+            
         }
     }
 

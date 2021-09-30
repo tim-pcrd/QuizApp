@@ -57,7 +57,6 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
             var command = new UpdateQuestionCommand
             {
                 Id = 101,
-                QuizId = 5,
                 Text = "updated text",
                 Answers = new List<UpdateAnswerDto>
                 {
