@@ -1,6 +1,5 @@
 import { FormArray } from "@angular/forms";
 
-//Tim
 export function moveItemsInFormArray(
   formArray: FormArray, fromIndex: number, toIndex: number): void {
   const dir = toIndex > fromIndex ? 1 : -1;
