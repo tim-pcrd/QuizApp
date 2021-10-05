@@ -4,6 +4,7 @@ import { IPagination } from 'src/app/shared/models/pagination';
 import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
+import { IQuestionToUpdate } from 'src/app/shared/models/question';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class QuizService {
   getQuizDetails(quizId: number) {
     return this.http.get<IQuizDetails>(`${this.baseUrl}quizzes/${quizId}`)
       .pipe(tap(x => console.log(x)));
+  }
+
+  updateQuestion(question: IQuestionToUpdate) {
+    return this.http.put(`${this.baseUrl}questions/${question.id}`, question)
   }
 }
 

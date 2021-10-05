@@ -1,4 +1,4 @@
-import { IAnswer } from "./answer";
+import { IAnswer, IAnswerToUpdate } from "./answer";
 
 export interface IQuestion {
   id: number;
@@ -7,4 +7,11 @@ export interface IQuestion {
   order: number;
   quizId: number;
   answers: IAnswer[];
+}
+
+export interface IQuestionToUpdate {
+  id: number;
+  text: string;
+  order: number;
+  anwers: IAnswerToUpdate[];
 }

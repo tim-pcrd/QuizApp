@@ -14,3 +14,5 @@ export interface IQuiz {
 export interface IQuizDetails extends IQuiz {
   questions: IQuestion[];
 }
+
+

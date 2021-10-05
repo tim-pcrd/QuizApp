@@ -6,3 +6,10 @@ export interface IAnswer {
   questionId: number;
 }
 
+export interface IAnswerToUpdate {
+  id: number;
+  text: string;
+  correct: boolean;
+  order: number;
+}
+

@@ -6,6 +6,7 @@ import { QuizzesRoutingModule } from './quizzes-routing.module';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 import { QuestionComponent } from './quiz-details/question/question.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CreateQuizComponent } from './create-quiz/create-quiz.component';
 
 
 
@@ -14,6 +15,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     QuizzesComponent,
     QuizDetailsComponent,
     QuestionComponent,
+    CreateQuizComponent,
 
   ],
   imports: [
