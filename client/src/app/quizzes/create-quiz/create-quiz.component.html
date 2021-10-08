@@ -1,14 +1,29 @@
-<form>
+<form [formGroup]="quizForm" (ngSubmit)="onSubmit()" novalidate>
   <div class="mb-3">
     <label for="name" class="form-label">Naam</label>
-    <input type="text" class="form-control" id="name">
+    <input type="text" class="form-control"
+    [ngClass]="{'is-invalid':!quizForm.controls.name.valid && quizForm.controls.name.touched}" id="name" formControlName="name" required>
+    <form-control-validation [control]="quizForm.controls.name" controlName="Naam"></form-control-validation>
   </div>
   <div class="mb-3">
     <label for="numberOfQuestions" class="form-label">Aantal vragen</label>
-    <select class="form-select" aria-label="Default select example">
-      <option selected disabled>Kies</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
+    <select class="form-select" formControlName="numberOfQuestions">
+      <option [value]="null" disabled>Kies</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
     </select>
   </div>
+  <div class="mb-5">
+    <label for="category" class="form-label">Categorie</label>
+    <select class="form-select" formControlName="categoryId"
+      [ngClass]="{'is-invalid':!quizForm.controls.categoryId.valid && quizForm.controls.categoryId.touched}">
+      <option [value]="null" disabled>Kies</option>
+      <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+    </select>
+    <form-control-validation [control]="quizForm.controls.categoryId" controlName="Categorie"></form-control-validation>
+  </div>
+  <div class="text-center">
+    <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fas fa-save"></i> Opslaan</button>
+  </div>
+
 </form>

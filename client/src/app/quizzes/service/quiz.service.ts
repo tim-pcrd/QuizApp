@@ -5,6 +5,7 @@ import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
 import { IQuestionToUpdate } from 'src/app/shared/models/question';
+import { ICategory } from 'src/app/shared/models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,11 @@ export class QuizService {
   updateQuestion(question: IQuestionToUpdate) {
     return this.http.put(`${this.baseUrl}questions/${question.id}`, question)
   }
+
+  getCategories() {
+    return this.http.get<ICategory[]>(`${this.baseUrl}categories`);
+  }
+
 }
 
 
