@@ -32,19 +32,19 @@ namespace QuizApp.Persistence
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuizDbContext).Assembly);
         }
 
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-        //    foreach (var entry in ChangeTracker.Entries<UserData>())
-        //    {
-        //        if (entry.State == EntityState.Added)
-        //        {
-        //            entry.Entity.CreatedBy = _loggedInUserService.UserName;
-        //            entry.Entity.CreatedAt = DateTimeOffset.Now;
-        //        }
-        //    }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<UserData>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedBy = _loggedInUserService.UserName;
+                    entry.Entity.CreatedAt = DateTimeOffset.Now;
+                }
+            }
 
-        //    return base.SaveChangesAsync(cancellationToken);
-        //}
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
     }
 }

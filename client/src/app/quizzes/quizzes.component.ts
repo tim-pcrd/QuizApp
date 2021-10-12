@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPagination } from 'src/app/shared/models/pagination';
 import { IQuiz } from 'src/app/shared/models/quiz';
@@ -11,6 +11,7 @@ import { QuizService } from './service/quiz.service';
 })
 export class QuizzesComponent implements OnInit {
   quizzes: IPagination<IQuiz[]> | undefined;
+  @ViewChild('closeModal') closeModal!: ElementRef;
 
   constructor(private quizService: QuizService, private router: Router) { }
 
@@ -30,5 +31,10 @@ export class QuizzesComponent implements OnInit {
 
   onRowClicked(quizId: number){
     this.router.navigateByUrl(`/quizzen/${quizId}`)
+  }
+
+  quizAdded(id: number) {
+    this.closeModal.nativeElement.click();
+    this.router.navigateByUrl(`/quizzen/${id}`)
   }
 }

@@ -15,4 +15,10 @@ export interface IQuizDetails extends IQuiz {
   questions: IQuestion[];
 }
 
+export interface IQuizToCreate {
+  name: string;
+  numberOfQuestions: number;
+  categoryId: number;
+}
+
 

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IPagination } from 'src/app/shared/models/pagination';
-import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
+import { IQuiz, IQuizDetails, IQuizToCreate } from 'src/app/shared/models/quiz';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
 import { IQuestionToUpdate } from 'src/app/shared/models/question';
@@ -36,6 +36,11 @@ export class QuizService {
   getCategories() {
     return this.http.get<ICategory[]>(`${this.baseUrl}categories`);
   }
+
+  createQuiz(quiz: IQuizToCreate) {
+    return this.http.post<number>(`${this.baseUrl}quizzes`, quiz);
+  }
+
 
 }
 
