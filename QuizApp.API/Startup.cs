@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,6 +46,11 @@ namespace QuizApp.API
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.Configure<RouteOptions>(options => 
+            {
+                options.LowercaseUrls = true;
+            });
+
             //services.Configure<JsonOptions>(options =>
             //{
             //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -71,6 +77,8 @@ namespace QuizApp.API
                     builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                 });
             });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

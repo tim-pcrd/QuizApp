@@ -2,5 +2,6 @@
 <div *ngIf="!control.valid && control.touched" class="invalid-feedback d-block">
   <div *ngIf="control.errors?.required">{{controlName}} is verplicht</div>
   <div *ngIf="control.errors?.maxlength">Maximaal {{control.errors?.maxlength.requiredLength}} tekens</div>
+  <div *ngIf="control.errors?.exists">{{controlName}} bestaat al, kies een unieke naam.</div>
 </div>
 

@@ -41,6 +41,10 @@ export class QuizService {
     return this.http.post<number>(`${this.baseUrl}quizzes`, quiz);
   }
 
+  checkNameExists(name: string) {
+    return this.http.get<boolean>(`${this.baseUrl}quizzes/nameexists?name=${name}`)
+  }
+
 
 }
 

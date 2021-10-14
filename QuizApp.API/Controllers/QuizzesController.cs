@@ -4,6 +4,7 @@ using QuizApp.API.Helpers;
 using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Commands.DeleteQuiz;
 using QuizApp.Application.Features.Quizzes.Commands.UpdateQuiz;
+using QuizApp.Application.Features.Quizzes.Queries.CheckNameExists;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
 using QuizApp.Application.Helpers;
@@ -44,6 +45,14 @@ namespace QuizApp.API.Controllers
             var quiz = await _mediator.Send(new GetQuizDetailsQuery(id, _loggedInUserService.UserName));
 
             return Ok(quiz);
+        }
+
+        [HttpGet("nameexists")]
+        public async Task<ActionResult<bool>> CheckNameExists(string name)
+        {
+            var result = await _mediator.Send(new CheckNameExistsQuery(name));
+
+            return Ok(result);
         }
 
         [HttpPost]
