@@ -1,8 +1,9 @@
+import { findLast } from '@angular/compiler/src/directive_resolver';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { Observable, of, timer } from 'rxjs';
+import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
 import { ICategory } from 'src/app/shared/models/category';
 import { QuizService } from '../service/quiz.service';
 
@@ -31,7 +32,7 @@ export class CreateQuizComponent implements OnInit {
 
   onSubmit() {
     if(this.quizForm.valid) {
-      console.log(this.quizForm.value)
+      console.log(this.quizForm)
       this.quizService.createQuiz(this.quizForm.value)
         .subscribe(id => {
           this.quizAdded.emit(id);
@@ -46,17 +47,17 @@ export class CreateQuizComponent implements OnInit {
         return of(null);
       }
 
-      return this.quizService.checkNameExists(control.value)
+      return timer(1000)
         .pipe(
-          debounceTime(1000),
-          map(exists => {
-            console.log('exists api')
-            if(exists) {
-              return {exists: true};
-            } else {
-              return null;
-            }
-          })
+          switchMap(() => {
+            return this.quizService.checkNameExists(control.value)
+              .pipe(
+                map(exists => exists ? {exists: true} : null),
+                finalize(() => console.log('finished inner'))
+              )
+          }),
+          finalize(() => console.log('finished outer'))
+
         )
     }
   }

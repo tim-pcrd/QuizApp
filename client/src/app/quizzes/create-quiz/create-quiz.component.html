@@ -1,11 +1,16 @@
 <form [formGroup]="quizForm" (ngSubmit)="onSubmit()" novalidate>
-  <div class="mb-3">
+  <div class="mb-3 position-relative">
+
     <label for="name" class="form-label">Naam</label>
     <input type="text" class="form-control"
     [ngClass]="{
-      'is-invalid':!quizForm.controls.name.valid && quizForm.controls.name.touched,
+      'is-invalid':quizForm.controls.name.invalid && (quizForm.controls.name.dirty || quizForm.controls.name.touched),
       'is-valid':quizForm.controls.name.valid}" id="name" formControlName="name" required>
     <form-control-validation [control]="quizForm.controls.name" controlName="Naam"></form-control-validation>
+    <span class="loader" *ngIf="quizForm.controls.name.status === 'PENDING'">
+      <i class="fas fa-spinner fa-spin"></i>
+    </span>
+
   </div>
   <div class="mb-3">
     <label for="numberOfQuestions" class="form-label">Aantal vragen</label>

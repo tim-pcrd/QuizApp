@@ -11,7 +11,7 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if(req.method === 'POST' || req.method === 'PUT') {
+    if(req.method === 'POST' || req.method === 'PUT' || req.url.includes('exists')) {
       return next.handle(req);
     }
 

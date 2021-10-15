@@ -1,0 +1,8 @@
+@use "../../../styles/custom" as *;
+
+.loader{
+  position: absolute;
+  top:38px;
+  right:35px;
+  color:$primary;
+}
