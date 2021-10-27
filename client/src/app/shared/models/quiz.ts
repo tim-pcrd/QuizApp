@@ -5,10 +5,10 @@ export interface IQuiz {
   name: string;
   numberOfQuestions: number;
   category: string;
-  status: string;
-  createdAt: Date;
+  status?: string;
+  createdAt?: Date;
   startDate?: Date;
-  createdBy: string;
+  createdBy?: string;
 }
 
 export interface IQuizDetails extends IQuiz {

@@ -1,17 +1,23 @@
-import { IAnswer, IAnswerToUpdate } from "./answer";
+import { IAnswer, IAnswerToCreate, IAnswerToUpdate } from "./answer";
 
-export interface IQuestion {
-  id: number;
+interface IQuestionBase {
   text: string;
-  imageUrl: string;
   order: number;
-  quizId: number;
-  answers: IAnswer[];
 }
 
-export interface IQuestionToUpdate {
+export interface IQuestion extends IQuestionBase {
   id: number;
-  text: string;
-  order: number;
-  anwers: IAnswerToUpdate[];
+  imageUrl: string;
+  answers: IAnswer[]
+  quizId: number;
+}
+
+export interface IQuestionToUpdate extends IQuestionBase {
+  id: number;
+  answers: IAnswerToUpdate[];
+}
+
+export interface IQuestionToCreate extends IQuestionBase {
+  quizId: number;
+  answers: IAnswerToCreate[];
 }

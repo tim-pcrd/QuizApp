@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PaginationModule } from 'ngx-bootstrap/pagination'
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
@@ -19,6 +20,7 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     CoreModule,
     HttpClientModule,
     PaginationModule.forRoot(),
+    ModalModule.forRoot(),
     BrowserAnimationsModule,
     NgxSpinnerModule
   ],

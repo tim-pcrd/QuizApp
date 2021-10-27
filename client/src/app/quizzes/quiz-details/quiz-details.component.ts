@@ -1,10 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { IQuizDetails } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
 import * as _ from "underscore";
+import { IQuestion } from 'src/app/shared/models/question';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-quiz-details',
@@ -14,6 +16,8 @@ import * as _ from "underscore";
 export class QuizDetailsComponent implements OnInit, OnDestroy {
   quiz: IQuizDetails | undefined;
   sub: Subscription | undefined;
+  newQuestion: IQuestion | undefined;
+
 
   constructor(private route: ActivatedRoute, private quizService: QuizService) { }
 
@@ -31,8 +35,33 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         question.answers = _.sortBy(question.answers, x => x.order);
       }
 
+      this.newQuestion = this.initNewQuestion(this.quiz);
+
     });
   }
+
+  initNewQuestion(quiz: IQuizDetails) {
+    const order = quiz.questions.length === 0
+      ? 1
+      : Math.max(...quiz.questions.map(x => x.order)) + 1;
+
+    const question: IQuestion = {
+      id: 0,
+      order,
+      text: '',
+      imageUrl:'',
+      quizId: quiz.id,
+      answers: [
+        {id: 0, text: '', questionId: 0, correct: true, order: 1 },
+        {id: 0, text: '', questionId: 0, correct: false, order: 2 },
+        {id: 0, text: '', questionId: 0, correct: false, order: 3 },
+        {id: 0, text: '', questionId: 0, correct: false, order: 4 }
+      ]
+    }
+    return question;
+  }
+
+
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

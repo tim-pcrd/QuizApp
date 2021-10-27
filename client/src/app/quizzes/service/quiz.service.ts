@@ -6,12 +6,14 @@ import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
 import { IQuestionToUpdate } from 'src/app/shared/models/question';
 import { ICategory } from 'src/app/shared/models/category';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
   baseUrl = environment.apiUrl;
+  disableEdit = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) { }
 
@@ -44,6 +46,8 @@ export class QuizService {
   checkNameExists(name: string) {
     return this.http.get<boolean>(`${this.baseUrl}quizzes/nameexists?name=${name}`)
   }
+
+
 
 
 }

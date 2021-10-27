@@ -1,7 +1,31 @@
 <div *ngIf="quiz">
   <h3 class="mb-5">{{quiz.name}}</h3>
-  <div *ngFor="let question of quiz.questions">
-    <app-question [question]="question"></app-question>
+
+  <form>
+
+  </form>
+  <div class="text-end">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+      <i class="fas fa-plus"></i> Nieuwe vraag
+    </button>
   </div>
 
+  <div *ngFor="let question of quiz.questions" class="shadow">
+    <app-question [question]="question"></app-question>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nieuwe quiz" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down modal-lg">
+    <div class="modal-content border border-3 border-primary">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="staticBackdropLabel">Nieuwe vraag</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closeModal></button>
+      </div>
+      <div class="modal-body" *ngIf="newQuestion">
+        <app-question  [question]="newQuestion"></app-question>
+      </div>
+    </div>
+  </div>
 </div>

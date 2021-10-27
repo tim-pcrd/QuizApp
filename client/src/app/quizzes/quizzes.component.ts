@@ -3,11 +3,26 @@ import { Router } from '@angular/router';
 import { IPagination } from 'src/app/shared/models/pagination';
 import { IQuiz } from 'src/app/shared/models/quiz';
 import { QuizService } from './service/quiz.service';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-quizzes',
   templateUrl: './quizzes.component.html',
-  styleUrls: ['./quizzes.component.scss']
+  styleUrls: ['./quizzes.component.scss'],
+  animations: [
+    trigger(
+      'enterAnimation', [
+        transition(':enter', [
+          style({transform: 'translateX(100%)', opacity: 0, background: '#1BA4D1'}),
+          animate('500ms', style({transform: 'translateX(0)', opacity: 1, 'overflow-x': 'hidden', background: '#fff'}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateX(0)', opacity: 1}),
+          animate('500ms', style({transform: 'translateX(100%)', opacity: 0}))
+        ])
+      ]
+    ),
+  ]
 })
 export class QuizzesComponent implements OnInit {
   quizzes: IPagination<IQuiz[]> | undefined;
@@ -33,8 +48,10 @@ export class QuizzesComponent implements OnInit {
     this.router.navigateByUrl(`/quizzen/${quizId}`)
   }
 
-  quizAdded(id: number) {
+  quizAdded(quiz: IQuiz) {
+    this.quizzes?.data.pop();
+    this.quizzes?.data.unshift(quiz);
     this.closeModal.nativeElement.click();
-    this.router.navigateByUrl(`/quizzen/${id}`)
+    // this.router.navigateByUrl(`/quizzen/${id}`)
   }
 }

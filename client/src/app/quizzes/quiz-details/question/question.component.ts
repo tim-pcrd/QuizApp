@@ -1,5 +1,5 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { moveItemsInFormArray } from 'src/app/shared/functions/form-functions';
 import { IQuestion } from 'src/app/shared/models/question';
@@ -14,12 +14,38 @@ import { QuizService } from '../../service/quiz.service';
 export class QuestionComponent implements OnInit {
   @Input() question!: IQuestion;
   editMode = false;
-  quizForm: FormGroup = new FormGroup({});
+  createMode = false;
+  disableEditButton = false;
+  questionForm: FormGroup = new FormGroup({});
 
   constructor(private fb: FormBuilder, private quizService: QuizService) { }
 
   ngOnInit(): void {
-    this.quizForm = this.fb.group({
+
+    if (this.question.id === 0) {
+      this.createMode = true;
+    }
+
+    this.quizService.disableEdit.subscribe(disable => this.disableEditButton = disable);
+
+
+    this.initForm();
+  }
+
+  activateEditMode(){
+    this.quizService.disableEdit.next(true);
+    this.editMode = true;
+  }
+
+  cancel() {
+    this.editMode = false;
+    this.initForm();
+    this.quizService.disableEdit.next(false);
+  }
+
+  initForm() {
+
+    this.questionForm = this.fb.group({
       id: [this.question?.id],
       text: [this.question?.text],
       order: [this.question?.order],
@@ -31,7 +57,7 @@ export class QuestionComponent implements OnInit {
 
   addAnswers() {
     for(let answer of this.question.answers) {
-      (this.quizForm.get('answers') as FormArray).push(this.fb.group({
+      this.answers.push(this.fb.group({
         id: [answer.id],
         order: [answer.order],
         text: [answer.text],
@@ -40,20 +66,11 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  activateEditMode(){
-    this.editMode = true;
-  }
-
-  endEditMode() {
-    this.editMode = false;
-  }
-
   get answers() {
-    return this.quizForm.get('answers') as FormArray;
+    return this.questionForm.get('answers') as FormArray;
   }
 
   drop(event: CdkDragDrop<string[]>) {
-
     moveItemsInFormArray(this.answers, event.previousIndex, event.currentIndex);
 
     for(let [index, control] of this.answers.controls.entries()){
@@ -64,10 +81,18 @@ export class QuestionComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log(this.quizForm.value);
+    console.log(this.questionForm.value);
 
-    this.quizService.updateQuestion(this.quizForm.value)
-      .subscribe(x => console.log("Update gelukt"), err => console.log(err));
+    this.quizService.updateQuestion(this.questionForm.value).subscribe(
+      () => {
+        this.question = {
+          ...this.question,
+          ...this.questionForm.value
+        }
+        this.editMode = false;
+        this.quizService.disableEdit.next(false);
+      },
+      err => console.log(err));
   }
 
 }

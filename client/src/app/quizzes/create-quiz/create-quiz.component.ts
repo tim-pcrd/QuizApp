@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
 import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
 import { ICategory } from 'src/app/shared/models/category';
+import { IQuiz } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { QuizService } from '../service/quiz.service';
   styleUrls: ['./create-quiz.component.scss']
 })
 export class CreateQuizComponent implements OnInit {
-  @Output() quizAdded:EventEmitter<number> = new EventEmitter<number>();
+  @Output() quizAdded:EventEmitter<IQuiz> = new EventEmitter<IQuiz>();
 
   categories: ICategory[] = [];
   quizForm: FormGroup = this.fb.group({
@@ -27,7 +28,7 @@ export class CreateQuizComponent implements OnInit {
   ngOnInit(): void {
     this.quizService.getCategories().subscribe(categories => {
       this.categories = categories;
-    }, error => console.log('error'));
+    }, error => console.log(error));
   }
 
   onSubmit() {
@@ -35,7 +36,13 @@ export class CreateQuizComponent implements OnInit {
       console.log(this.quizForm)
       this.quizService.createQuiz(this.quizForm.value)
         .subscribe(id => {
-          this.quizAdded.emit(id);
+          this.quizAdded.emit({
+            id: id,
+            name: this.quizForm.value.name,
+            numberOfQuestions: this.quizForm.value.numberOfQuestions,
+            category: this.categories.find(x => x.id === this.quizForm.value.categoryId)!.name,
+            createdAt: new Date()
+          });
           this.quizForm.reset();
         }, error => console.log(error))
     }

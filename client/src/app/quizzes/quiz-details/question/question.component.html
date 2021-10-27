@@ -1,65 +1,39 @@
-<div class="shadow position-relative p-3 mb-5" *ngIf="question">
-  <div *ngIf="!editMode" class="row">
-    <div class="col-md-9 col-lg-10">
-      <h4>Vraag {{question.order}}</h4>
+<div class=" position-relative p-3 mb-5 " [ngClass]="{'border border-3 border-primary rounded': editMode}" *ngIf="question">
 
-      <p>{{question.text}}</p>
-
-      <p class="mb-2">Antwoorden: </p>
-      <div *ngFor="let answer of question.answers">
-        <i *ngIf="answer.correct" class="fas fa-check" style="color:green;"></i>
-        <i *ngIf="!answer.correct" class="fas fa-times" style="color:red;"></i>
-        {{answer.text}}
-      </div>
-    </div>
-    <div class="col-md-3 col-lg-2 d-flex flex-column gap-2">
-      <button class="btn btn-primary btn-sm" (click)="activateEditMode()">
-        <i class="fas fa-edit"></i> Bewerk
-      </button>
-    </div>
-
-
-  </div>
-
-  <form [formGroup]="quizForm" (ngSubmit)="onFormSubmit()">
-    <div *ngIf="editMode" class="row">
-      <div class="col-md-9 col-lg-10">
+  <form [formGroup]="questionForm" (ngSubmit)="onFormSubmit()">
+    <div  class="row">
+      <div [ngClass]="createMode ? 'col-12' : 'col-md-9 col-lg-10'">
 
         <div class="mb-3">
           <label for="text" class="form-label">Vraag</label>
-          <textarea class="form-control" id="text" rows="3" formControlName="text"></textarea>
+          <textarea class="form-control" id="text" rows="5" formControlName="text" [readonly]="!editMode && !createMode"></textarea>
         </div>
 
-        <div cdkDropList (cdkDropListDropped)="drop($event)" formArrayName="answers">
+        <div cdkDropList (cdkDropListDropped)="drop($event)" formArrayName="answers" [cdkDropListSortingDisabled]="!editMode && !createMode">
           <div *ngFor="let answerForm of answers.controls, let i = index" cdkDrag [cdkDragData]="answerForm.value">
-            <!-- <i *ngIf="answer.correct" class="fas fa-check" style="color:green;"></i>
-            <i *ngIf="!answer.correct" class="fas fa-times" style="color:red;"></i>
-            {{answer.text}} -->
             <div class="input-group mb-3" [formGroupName]="i">
               <span class="input-group-text" id="basic-addon1">
                 <i *ngIf="answerForm.value.correct" class="fas fa-check" style="color:green;"></i>
                 <i *ngIf="!answerForm.value.correct" class="fas fa-times" style="color:red;font-size: 1.2rem;"></i>
               </span>
-              <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" formControlName="text">
+              <input type="text" class="form-control" placeholder="Antwoord" aria-label="Antwoord" formControlName="text" [readonly]="!editMode && !createMode">
             </div>
           </div>
         </div>
 
 
-
-
-
       </div>
-      <div class="col-md-3 col-lg-2 d-flex flex-row flex-md-column gap-2 justify-content-md-end">
-        <button class="btn btn-warning btn-sm flex-grow-1 flex-md-grow-0" (click)="endEditMode()" type="button">
+      <div class=" d-flex flex-row gap-2 " [ngClass]="{'flex-md-column justify-content-md-end col-md-3 col-lg-2':!createMode, 'justify-content-md-center': createMode}">
+        <button class="btn btn-warning btn-sm flex-grow-1 flex-md-grow-0" (click)="cancel()" type="button" *ngIf="editMode || createMode">
           <i class="fas fa-times"></i> Annuleer
         </button>
-        <button class="btn btn-success btn-sm flex-grow-1 flex-md-grow-0" type="submit">
+        <button class="btn btn-success btn-sm flex-grow-1 flex-md-grow-0" type="submit" *ngIf="editMode || createMode">
           <i class="fas fa-save"></i> Opslaan
         </button>
-        <button class="btn btn-danger btn-sm flex-grow-1 flex-md-grow-0" (click)="activateEditMode()" type="button">
+        <button class="btn btn-danger btn-sm flex-grow-1 flex-md-grow-0" (click)="activateEditMode()" type="button" *ngIf="editMode">
           <i class="fas fa-trash"></i> Verwijder
         </button>
+        <button class="btn btn-primary btn-sm flex-grow-0" *ngIf="!editMode && !createMode" type="button" (click)="activateEditMode()" [disabled]="disableEditButton"><i class="fas fa-edit"></i> Bewerk</button>
       </div>
     </div>
   </form>

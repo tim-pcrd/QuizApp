@@ -2,32 +2,44 @@
 <!-- Button trigger modal -->
 <div class="d-flex flex-sm-row flex-column justify-content-between mb-4">
   <h4 class="text-primary text-center text-sm-start">Overzicht opgestelde quizzen</h4>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-quiz">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
     <i class="fas fa-plus"></i> Nieuw
   </button>
 </div>
 
 
 <ng-container *ngIf="quizzes">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Aangemaakt op</th>
-        <th scope="col">Naam</th>
-        <th scope="col">Aantal vragen</th>
-        <th scope="col">Actief</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="table-responsive">
+    <table class="table table-hover border">
+      <thead>
+        <tr class="text-primary">
+          <th scope="col">Aangemaakt op</th>
+          <th scope="col">Naam</th>
+          <th scope="col">Aantal vragen</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" class="text-center">Actief</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      <tr *ngFor="let quiz of quizzes.data" (click)="onRowClicked(quiz.id)">
-        <td>{{quiz.createdAt | date:'dd/MM/yyyy'}}</td>
-        <td>{{quiz.name}}</td>
-        <td>{{quiz.numberOfQuestions}}</td>
-        <td>{{quiz.startDate ? 'Ja' : 'Nee'}}</td>
-      </tr>
-    </tbody>
-  </table>
+        <tr *ngFor="let quiz of quizzes.data" (click)="onRowClicked(quiz.id)">
+          <td>{{quiz.createdAt | date:'dd/MM/yyyy'}}</td>
+          <td>{{quiz.name}}</td>
+          <td>{{quiz.numberOfQuestions}}</td>
+          <td>{{quiz.category}}</td>
+          <td class="text-center">
+            <ng-container *ngIf="quiz.startDate else noStartDate">
+              <i class="far fa-check-circle" style="color:'green';font-size:1.3rem;"></i>
+            </ng-container>
+            <ng-template #noStartDate>
+              <i class="far fa-times-circle" style="color:'red';font-size:1.3rem;"></i>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 
   <div class="d-flex justify-content-end">
     <span class="">
@@ -52,7 +64,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="new-quiz" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nieuwe quiz" aria-hidden="true">
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nieuwe quiz" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border border-3 border-primary">
       <div class="modal-header">
@@ -65,4 +77,5 @@
     </div>
   </div>
 </div>
+
 
