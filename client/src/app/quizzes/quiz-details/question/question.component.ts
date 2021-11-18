@@ -1,8 +1,9 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { moveItemsInFormArray } from 'src/app/shared/functions/form-functions';
-import { IQuestion } from 'src/app/shared/models/question';
+import { IQuestion, IQuestionToCreate } from 'src/app/shared/models/question';
+import { IQuiz } from 'src/app/shared/models/quiz';
 import * as _ from "underscore";
 import { QuizService } from '../../service/quiz.service';
 
@@ -11,8 +12,10 @@ import { QuizService } from '../../service/quiz.service';
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
   @Input() question!: IQuestion;
+  @Input() quizId!: number;
+  @Output() questionCreated = new EventEmitter<IQuestion>()
   editMode = false;
   createMode = false;
   disableEditButton = false;
@@ -20,12 +23,16 @@ export class QuestionComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private quizService: QuizService) { }
 
+  ngOnDestroy(): void {
+    this.quizService.disableEdit.next(false);
+  }
+
   ngOnInit(): void {
 
     if (this.question.id === 0) {
       this.createMode = true;
+      this.quizService.disableEdit.next(true)
     }
-
     this.quizService.disableEdit.subscribe(disable => this.disableEditButton = disable);
 
 
@@ -46,9 +53,9 @@ export class QuestionComponent implements OnInit {
   initForm() {
 
     this.questionForm = this.fb.group({
-      id: [this.question?.id],
-      text: [this.question?.text],
-      order: [this.question?.order],
+      id: [this.question.id],
+      text: [this.question.text, [Validators.required, Validators.maxLength(500)]],
+      order: [this.question.order, [Validators.required]],
       answers: this.fb.array([])
     });
     this.addAnswers();
@@ -59,9 +66,9 @@ export class QuestionComponent implements OnInit {
     for(let answer of this.question.answers) {
       this.answers.push(this.fb.group({
         id: [answer.id],
-        order: [answer.order],
-        text: [answer.text],
-        correct: [answer.correct]
+        order: [answer.order, [Validators.required]],
+        text: [answer.text, [Validators.required, Validators.maxLength(50)]],
+        correct: [answer.correct, [Validators.required]]
       }));
     }
   }
@@ -83,16 +90,35 @@ export class QuestionComponent implements OnInit {
   onFormSubmit() {
     console.log(this.questionForm.value);
 
-    this.quizService.updateQuestion(this.questionForm.value).subscribe(
-      () => {
-        this.question = {
-          ...this.question,
-          ...this.questionForm.value
+    if(this.questionForm.valid) {
+      if(this.editMode) {
+        this.quizService.updateQuestion(this.questionForm.value).subscribe(
+          () => {
+            this.question = {
+              ...this.question,
+              ...this.questionForm.value
+            }
+            this.editMode = false;
+            this.quizService.disableEdit.next(false);
+          },
+          err => console.log(err));
+      } else {
+        const createdQuestion: IQuestionToCreate = {
+          quizId: this.quizId,
+          text: this.questionForm.value.text,
+          order: this.questionForm.value.order,
+          answers: this.questionForm.value.answers.map(({id, ...answer}: any) => answer)
         }
-        this.editMode = false;
-        this.quizService.disableEdit.next(false);
-      },
-      err => console.log(err));
+        console.log(createdQuestion)
+        this.questionCreated.emit(createdQuestion as IQuestion)
+        // this.quizService.createQuiz(this.questionForm.value).subscribe(
+        //   id => {
+        //     this.createMode = false;
+        //   },
+        //   error => console.log(error)
+        // );
+      }
+    }
   }
 
 }

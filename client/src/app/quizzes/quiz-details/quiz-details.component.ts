@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { IQuizDetails } from 'src/app/shared/models/quiz';
+import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
 import * as _ from "underscore";
 import { IQuestion } from 'src/app/shared/models/question';
@@ -17,6 +17,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   quiz: IQuizDetails | undefined;
   sub: Subscription | undefined;
   newQuestion: IQuestion | undefined;
+  createMode = false;
 
 
   constructor(private route: ActivatedRoute, private quizService: QuizService) { }
@@ -35,7 +36,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         question.answers = _.sortBy(question.answers, x => x.order);
       }
 
-      this.newQuestion = this.initNewQuestion(this.quiz);
+
 
     });
   }
@@ -61,6 +62,19 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     return question;
   }
 
+  openNewQuiz() {
+    this.newQuestion = this.initNewQuestion(this.quiz!);
+    this.createMode = true;
+  }
+
+  onQuestionCreated(question: IQuestion) {
+    this.quiz?.questions.push(question);
+    this.createMode = false;
+  }
+
+  cancelCreateQuestion() {
+    this.createMode = false;
+  }
 
 
   ngOnDestroy(): void {

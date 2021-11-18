@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuizApp.API.Helpers;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Features.Questions.Commands.DeleteQuestion;
 using QuizApp.Application.Features.Questions.Commands.UpdateQuestion;
@@ -26,11 +27,11 @@ namespace QuizApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateQuestionCommand command)
+        public async Task<ActionResult<CreateReponse>> Create(CreateQuestionCommand command)
         {
             var result = await _mediator.Send(command);
 
-            return Ok(result);
+            return Ok(new CreateReponse { Id = result });
         }
 
         [HttpPut("{id}")]

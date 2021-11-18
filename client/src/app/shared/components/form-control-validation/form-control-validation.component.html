@@ -1,5 +1,5 @@
 <!-- d-block nodig voor validatie te weergeven, standard selector werkt niet in aparte component -->
-<div *ngIf="!control.valid && (control.dirty || control.touched)" class="invalid-feedback d-block">
+<div *ngIf="!control.valid && (control.dirty || control.touched)" class="invalid-feedback d-block mt-0">
   <div *ngIf="control.errors?.required">{{controlName}} is verplicht</div>
   <div *ngIf="control.errors?.maxlength">Maximaal {{control.errors?.maxlength.requiredLength}} tekens</div>
   <div *ngIf="control.errors?.exists">{{controlName}} bestaat al, kies een unieke naam.</div>
