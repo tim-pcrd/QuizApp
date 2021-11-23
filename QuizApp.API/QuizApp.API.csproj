@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>af4d33e2-5e1c-41ec-8e37-311c616cdb9d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizApp.Application\QuizApp.Application.csproj" />
     <ProjectReference Include="..\QuizApp.Identity\QuizApp.Identity.csproj" />
+    <ProjectReference Include="..\QuizApp.Infrastructure\QuizApp.Infrastructure.csproj" />
     <ProjectReference Include="..\QuizApp.Persistence\QuizApp.Persistence.csproj" />
   </ItemGroup>
 

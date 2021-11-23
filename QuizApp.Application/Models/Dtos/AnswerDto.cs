@@ -12,6 +12,6 @@ namespace QuizApp.Application.Dtos
         public string Text { get; set; }
         public bool Correct { get; set; }
         public int Order { get; set; }
-        public int QuestionId { get; set; }
+
     }
 }

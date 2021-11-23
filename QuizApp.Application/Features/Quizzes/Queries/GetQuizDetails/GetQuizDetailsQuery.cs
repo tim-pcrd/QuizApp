@@ -8,7 +8,7 @@ namespace QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails
         public GetQuizDetailsQuery(int id, string userName)
         {
             Id = id;
-            UserName = userName;
+            UserName = userName; 
         }
         public int Id { get; }
         public string UserName { get; }

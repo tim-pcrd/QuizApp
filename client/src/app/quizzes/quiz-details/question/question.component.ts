@@ -1,6 +1,8 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { switchMap } from 'rxjs/operators';
 import { moveItemsInFormArray } from 'src/app/shared/functions/form-functions';
 import { IQuestion, IQuestionToCreate } from 'src/app/shared/models/question';
 import { IQuiz } from 'src/app/shared/models/quiz';
@@ -15,13 +17,14 @@ import { QuizService } from '../../service/quiz.service';
 export class QuestionComponent implements OnInit, OnDestroy {
   @Input() question!: IQuestion;
   @Input() quizId!: number;
-  @Output() questionCreated = new EventEmitter<IQuestion>()
+  @Output() questionCreated = new EventEmitter<IQuestion>();
+  imageSrc: string = '';
   editMode = false;
   createMode = false;
   disableEditButton = false;
   questionForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private quizService: QuizService) { }
+  constructor(private fb: FormBuilder, private quizService: QuizService, private sanitizer: DomSanitizer ) { }
 
   ngOnDestroy(): void {
     this.quizService.disableEdit.next(false);
@@ -56,6 +59,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
       id: [this.question.id],
       text: [this.question.text, [Validators.required, Validators.maxLength(500)]],
       order: [this.question.order, [Validators.required]],
+      image: [null],
+      imageExt: [null],
       answers: this.fb.array([])
     });
     this.addAnswers();
@@ -87,6 +92,22 @@ export class QuestionComponent implements OnInit, OnDestroy {
     console.log(this.answers.value);
   }
 
+  onFileChange(event:any) {
+    const reader = new FileReader();
+    const file:File = event.target.files[0];
+
+
+    if (file) {
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.imageSrc = reader.result as string;
+        this.questionForm.patchValue({image: this.imageSrc.split('base64,')[1], imageExt: file.name.split('.').slice(-1)[0]});
+        console.log(this.questionForm.value);
+      }
+    }
+  }
+
   onFormSubmit() {
     console.log(this.questionForm.value);
 
@@ -103,20 +124,25 @@ export class QuestionComponent implements OnInit, OnDestroy {
           },
           err => console.log(err));
       } else {
+
+        const imageFile = this.questionForm.value.image && this.questionForm.value.imageExt
+          ? {image: this.questionForm.value.image, extension: this.questionForm.value.imageExt}
+          : undefined;
+
         const createdQuestion: IQuestionToCreate = {
           quizId: this.quizId,
           text: this.questionForm.value.text,
           order: this.questionForm.value.order,
+          imageFile,
           answers: this.questionForm.value.answers.map(({id, ...answer}: any) => answer)
         }
-        console.log(createdQuestion)
-        this.questionCreated.emit(createdQuestion as IQuestion)
-        // this.quizService.createQuiz(this.questionForm.value).subscribe(
-        //   id => {
-        //     this.createMode = false;
-        //   },
-        //   error => console.log(error)
-        // );
+        this.quizService.createQuestion(createdQuestion).pipe(
+          switchMap((response: any) => this.quizService.getQuestion(response.id))
+        )
+        .subscribe((question: IQuestion) => {
+          this.createMode = false;
+          this.questionCreated.emit(question)
+        }, error => console.log(error))
       }
     }
   }

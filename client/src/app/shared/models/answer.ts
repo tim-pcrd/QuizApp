@@ -7,7 +7,6 @@ interface IAnswerBase {
 
 export interface IAnswer extends IAnswerBase {
   id: number;
-  questionId: number;
 }
 
 export interface IAnswerToUpdate extends IAnswerBase {

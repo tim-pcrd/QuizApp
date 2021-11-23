@@ -24,7 +24,6 @@ namespace QuizApp.Persistence
         public virtual DbSet<Quiz> Quizzes { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

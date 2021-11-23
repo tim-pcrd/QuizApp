@@ -32,11 +32,8 @@ namespace QuizApp.Application.Profiles
             CreateMap<UpdateQuizCommand, Quiz>();
 
             CreateMap<Category, CategoryDto>();
-            CreateMap<Answer, AnswerDto>();
-            CreateMap<Question, QuestionDto>()
-                .ForMember(
-                    dest => dest.ImageUrl,
-                    opt => opt.MapFrom(src => src.Image.Url));
+
+            CreateMap<Question, QuestionDto>();
 
 
 

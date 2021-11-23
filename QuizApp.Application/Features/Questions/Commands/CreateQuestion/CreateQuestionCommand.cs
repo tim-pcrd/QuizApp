@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using QuizApp.Application.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace QuizApp.Application.Features.Questions.Commands.CreateQuestion
         public int QuizId { get; set; }
         public string Text { get; set; }
         public int Order { get; set; }
+        public ImageDto ImageFile { get; set; }
         public ICollection<CreateAnswerDto> Answers { get; set; } = new List<CreateAnswerDto>();
 
     }

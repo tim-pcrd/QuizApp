@@ -11,6 +11,9 @@ $btn-close-opacity: 1;
 $btn-close-hover-opacity: .75 !default;
 $form-feedback-valid-color: $primary;
 
+$form-file-button-color:white;
+$form-file-button-bg: $primary;
+
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 

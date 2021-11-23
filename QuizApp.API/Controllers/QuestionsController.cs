@@ -5,6 +5,7 @@ using QuizApp.API.Helpers;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Features.Questions.Commands.DeleteQuestion;
 using QuizApp.Application.Features.Questions.Commands.UpdateQuestion;
+using QuizApp.Application.Features.Questions.Queries.GetQuestionDetails;
 using QuizApp.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,15 @@ namespace QuizApp.API.Controllers
         {
             _mediator = mediator;
             _loggedInUserService = loggedInUserService;
+        }
+
+        // TODO check user
+        [HttpGet("{id}")]
+        public async Task<ActionResult<QuestionDetailsVm>> Get(int id)
+        {
+            var result = await _mediator.Send(new GetQuestionDetailsQuery(id));
+
+            return Ok(result);
         }
 
         [HttpPost]

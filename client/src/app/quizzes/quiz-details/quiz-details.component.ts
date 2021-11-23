@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
-import * as _ from "underscore";
+import * as _ from 'underscore'
 import { IQuestion } from 'src/app/shared/models/question';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -53,10 +53,10 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
       imageUrl:'',
       quizId: quiz.id,
       answers: [
-        {id: 0, text: '', questionId: 0, correct: true, order: 1 },
-        {id: 0, text: '', questionId: 0, correct: false, order: 2 },
-        {id: 0, text: '', questionId: 0, correct: false, order: 3 },
-        {id: 0, text: '', questionId: 0, correct: false, order: 4 }
+        {id: 0, text: '', correct: true, order: 1 },
+        {id: 0, text: '', correct: false, order: 2 },
+        {id: 0, text: '', correct: false, order: 3 },
+        {id: 0, text: '', correct: false, order: 4 }
       ]
     }
     return question;

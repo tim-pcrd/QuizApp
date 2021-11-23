@@ -16,12 +16,6 @@ namespace QuizApp.Persistence.Configurations
             builder.HasKey(x => x.Id);
 
             builder
-                .HasOne(x => x.Image)
-                .WithOne()
-                .HasForeignKey<Question>(x => x.ImageId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            builder
                 .HasOne<Quiz>()
                 .WithMany(x => x.Questions)
                 .HasForeignKey(x => x.QuizId);

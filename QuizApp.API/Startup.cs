@@ -16,6 +16,7 @@ using QuizApp.Application;
 using QuizApp.Application.Interfaces;
 using QuizApp.Application.Interfaces.Persistence;
 using QuizApp.Identity;
+using QuizApp.Infrastructure;
 using QuizApp.Persistence;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,8 @@ namespace QuizApp.API
             services
                 .AddPersistenceServices(Configuration)
                 .AddApplicationServices()
-                .AddIdentityServices(Configuration);
+                .AddIdentityServices(Configuration)
+                .AddInfrastructureServices();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();

@@ -4,6 +4,7 @@ using Moq;
 using QuizApp.Application.Exceptions;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Interfaces.Application;
+using QuizApp.Application.Interfaces.Infrastructure;
 using QuizApp.Application.Profiles;
 using QuizApp.Domain.Entities;
 using QuizApp.Persistence;
@@ -22,6 +23,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
         private readonly QuizDbContext context;
         private readonly IMapper mapper;
         private readonly Mock<IValidation<CreateQuestionCommand, CreateQuestionCommandValidator>> validationMock;
+        private readonly Mock<IFileStorageService> fileStorageServiceMock;
 
         public CreateQuestionCommandTests(ApplicationCommandFixture fixture)
         {
@@ -29,6 +31,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
             mapper = fixture.Mapper;
 
             validationMock = new Mock<IValidation<CreateQuestionCommand, CreateQuestionCommandValidator>>();
+            fileStorageServiceMock = new Mock<IFileStorageService>();
 
         }
 
@@ -41,7 +44,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
                 Text = "Dit is een vraag",
             };
 
-            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object);
+            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object, fileStorageServiceMock.Object);
 
             var result = await sut.Handle(command, CancellationToken.None);
 
@@ -58,7 +61,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
                 Text = "Dit is een vraag",
             };
 
-            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object);
+            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object, fileStorageServiceMock.Object);
 
             Func<Task<int>> result = () => sut.Handle(command, CancellationToken.None);
 
@@ -76,7 +79,7 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
                 Text = "Dit is een vraag",
             };
 
-            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object);
+            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object,fileStorageServiceMock.Object);
 
             Func<Task<int>> result = () => sut.Handle(command, CancellationToken.None);
 

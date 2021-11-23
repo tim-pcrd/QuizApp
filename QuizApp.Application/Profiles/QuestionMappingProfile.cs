@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using QuizApp.Application.Dtos;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Features.Questions.Commands.UpdateQuestion;
+using QuizApp.Application.Features.Questions.Queries.GetQuestionDetails;
 using QuizApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,9 @@ namespace QuizApp.Application.Profiles
 
             CreateMap<UpdateQuestionCommand, Question>();
             CreateMap<UpdateAnswerDto, Answer>();
+
+            CreateMap<Question, QuestionDetailsVm>();
+            CreateMap<Answer, AnswerDto>();
         }
     }
 }

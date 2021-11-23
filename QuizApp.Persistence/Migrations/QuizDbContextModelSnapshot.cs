@@ -67,22 +67,6 @@ namespace QuizApp.Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("QuizApp.Domain.Entities.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("QuizApp.Domain.Entities.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -90,8 +74,8 @@ namespace QuizApp.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -105,10 +89,6 @@ namespace QuizApp.Persistence.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.HasIndex("QuizId");
 
@@ -169,18 +149,11 @@ namespace QuizApp.Persistence.Migrations
 
             modelBuilder.Entity("QuizApp.Domain.Entities.Question", b =>
                 {
-                    b.HasOne("QuizApp.Domain.Entities.Image", "Image")
-                        .WithOne()
-                        .HasForeignKey("QuizApp.Domain.Entities.Question", "ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("QuizApp.Domain.Entities.Quiz", null)
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("QuizApp.Domain.Entities.Quiz", b =>

@@ -5,13 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormControlValidationComponent } from './components/form-control-validation/form-control-validation.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 
 
 @NgModule({
   declarations: [
     FormControlValidationComponent,
-    ModalComponent
+    ModalComponent,
+    SafeHtmlPipe
   ],
   imports: [
     CommonModule
@@ -22,7 +24,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ModalModule,
     ReactiveFormsModule,
     FormControlValidationComponent,
-    ModalComponent
+    ModalComponent,
+    SafeHtmlPipe
   ]
 })
 export class SharedModule { }

@@ -14,6 +14,7 @@ namespace QuizApp.Identity
         public static async Task SeedAsync(QuizIdentityDbContext context, UserManager<ApplicationUser> userManager)
         {
             await context.Database.MigrateAsync();
+
             var user = new ApplicationUser
             {
                 Email = "picardtim@gmail.com",

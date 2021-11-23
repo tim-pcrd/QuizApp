@@ -4,7 +4,7 @@ import { IPagination } from 'src/app/shared/models/pagination';
 import { IQuiz, IQuizDetails, IQuizToCreate } from 'src/app/shared/models/quiz';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators'
-import { IQuestionToUpdate } from 'src/app/shared/models/question';
+import { IQuestion, IQuestionToCreate, IQuestionToUpdate } from 'src/app/shared/models/question';
 import { ICategory } from 'src/app/shared/models/category';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -31,21 +31,31 @@ export class QuizService {
       .pipe(tap(x => console.log(x)));
   }
 
+  createQuiz(quiz: IQuizToCreate) {
+    return this.http.post<number>(`${this.baseUrl}quizzes`, quiz);
+  }
+
+  checkNameExists(name: string) {
+    return this.http.get<boolean>(`${this.baseUrl}quizzes/nameexists?name=${name}`);
+  }
+
   updateQuestion(question: IQuestionToUpdate) {
-    return this.http.put(`${this.baseUrl}questions/${question.id}`, question)
+    return this.http.put(`${this.baseUrl}questions/${question.id}`, question);
+  }
+
+  createQuestion(question: IQuestionToCreate) {
+    return this.http.post<{id:number}>(`${this.baseUrl}questions`, question);
+  }
+
+  getQuestion(questionId: number) {
+    return this.http.get<IQuestion>(`${this.baseUrl}questions/${questionId}`)
   }
 
   getCategories() {
     return this.http.get<ICategory[]>(`${this.baseUrl}categories`);
   }
 
-  createQuiz(quiz: IQuizToCreate) {
-    return this.http.post<number>(`${this.baseUrl}quizzes`, quiz);
-  }
 
-  checkNameExists(name: string) {
-    return this.http.get<boolean>(`${this.baseUrl}quizzes/nameexists?name=${name}`)
-  }
 
 
 
