@@ -51,6 +51,10 @@ export class QuizService {
     return this.http.get<IQuestion>(`${this.baseUrl}questions/${questionId}`)
   }
 
+  deleteQuestion(questionId: number) {
+    return this.http.delete(`${this.baseUrl}questions/${questionId}`);
+  }
+
   getCategories() {
     return this.http.get<ICategory[]>(`${this.baseUrl}categories`);
   }

@@ -72,6 +72,14 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.createMode = false;
   }
 
+  onTest(test: string){
+    console.log(test);
+  }
+
+  onQuestionRemoved(question: IQuestion) {
+    this.quiz!.questions = this.quiz!.questions.filter(x => x.id !== question.id)
+  }
+
   cancelCreateQuestion() {
     this.createMode = false;
   }

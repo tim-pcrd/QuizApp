@@ -20,11 +20,11 @@
       <button class="btn btn-sm btn-warning" (click)="cancelCreateQuestion()"><i class="fas fa-times"></i> Annuleer</button>
     </div>
 
-    <app-question [question]="newQuestion" [quizId]="quiz.id" (questionCreated)="onQuestionCreated($event)"></app-question>
+    <app-question [question]="newQuestion" [quizId]="quiz.id"  (questionCreated)="onQuestionCreated($event)" ></app-question>
 
   </div>
 
   <div *ngFor="let question of quiz.questions" class="shadow">
-    <app-question [question]="question" [quizId]="quiz.id"></app-question>
+    <app-question [question]="question" [quizId]="quiz.id"(questionRemoved)="onQuestionRemoved($event)"></app-question>
   </div>
 </div>

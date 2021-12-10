@@ -40,7 +40,7 @@ namespace QuizApp.Infrastructure.Storage
             await client.CreateIfNotExistsAsync();
             client.SetAccessPolicy(PublicAccessType.Blob);
 
-            var fileName = $"{Guid.NewGuid()}{extension}";
+            var fileName = $"{Guid.NewGuid()}.{extension}";
             var blob = client.GetBlobClient(fileName);
 
             using var ms = new MemoryStream(content);

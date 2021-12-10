@@ -2,15 +2,7 @@
 
   <form [formGroup]="questionForm" (ngSubmit)="onFormSubmit()">
     <div  class="row">
-      <div class="col-12 col-lg-8"></div>
-      <div class="col-12 col-lg-4 ">
-        <div class="d-flex flex-column align-items-center">
-          <img class="img-fluid mb-2" [src]="this.question.imageUrl ?? this.imageSrc ?? ''">
-          <input class="form-control form-control-sm d-inline-block w-75" type="file" id="formFile" (change)="onFileChange($event)">
-        </div>
-      </div>
-      <div [ngClass]="createMode ? 'col-12' : 'col-md-9 col-lg-10'">
-
+      <div class="col-12 col-lg-8">
         <div class="mb-3">
           <label for="text" class="form-label">Vraag</label>
           <textarea class="form-control form-control-sm" id="text" rows="4" formControlName="text" [readonly]="!editMode && !createMode"
@@ -33,6 +25,16 @@
             <form-control-validation [control]="answers.controls[i].get('text')!" [controlName]="'Antwoord'"></form-control-validation>
           </div>
         </div>
+      </div>
+      <div class="col-12 col-lg-4 ">
+        <div class="d-flex flex-column align-items-center">
+          <img class="img-fluid mb-2" [src]="this.imageSrc || this.question.imageUrl ||  ''">
+          <input class="form-control form-control-sm d-inline-block w-75" type="file" id="formFile" (change)="onFileChange($event)" *ngIf="editMode || createMode">
+        </div>
+      </div>
+      <div [ngClass]="createMode ? 'col-12' : 'col-md-9 col-lg-10'">
+
+
 
 
       </div>
@@ -43,7 +45,7 @@
         <button class="btn btn-success btn-sm flex-grow-1 flex-md-grow-0" type="submit" *ngIf="editMode || createMode">
           <i class="fas fa-save"></i> Opslaan
         </button>
-        <button class="btn btn-danger btn-sm flex-grow-1 flex-md-grow-0" (click)="activateEditMode()" type="button" *ngIf="editMode">
+        <button class="btn btn-danger btn-sm flex-grow-1 flex-md-grow-0" (click)="deleteQuestion()" type="button" *ngIf="editMode">
           <i class="fas fa-trash"></i> Verwijder
         </button>
         <button class="btn btn-primary btn-sm flex-grow-0" *ngIf="!editMode && !createMode" type="button" (click)="activateEditMode()" [disabled]="disableEditButton"><i class="fas fa-edit"></i> Bewerk</button>

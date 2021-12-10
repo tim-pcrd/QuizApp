@@ -25,7 +25,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
   ]
 })
 export class QuizzesComponent implements OnInit {
-  quizzes: IPagination<IQuiz[]> | undefined;
+  quizzesPagination: IPagination<IQuiz[]> = {pageIndex: 1, pageSize: 10, count:0, data: []};
   @ViewChild('closeModal') closeModal!: ElementRef;
 
   constructor(private quizService: QuizService, private router: Router) { }
@@ -40,7 +40,7 @@ export class QuizzesComponent implements OnInit {
 
   getQuizzesFromService( pageIndex: number, pageSize: number){
     this.quizService.getQuizzes(pageIndex, pageSize).subscribe(data => {
-      this.quizzes = data;
+      this.quizzesPagination = data;
     },err => console.log(err));
   }
 
@@ -49,8 +49,10 @@ export class QuizzesComponent implements OnInit {
   }
 
   quizAdded(quiz: IQuiz) {
-    this.quizzes?.data.pop();
-    this.quizzes?.data.unshift(quiz);
+    this.quizzesPagination.data.unshift(quiz);
+    this.quizzesPagination.data.pop();
+    this.quizzesPagination.count++;
+
     this.closeModal.nativeElement.click();
     // this.router.navigateByUrl(`/quizzen/${id}`)
   }

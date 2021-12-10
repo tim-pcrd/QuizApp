@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
-import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
+import { debounceTime, delay, finalize, map, switchMap } from 'rxjs/operators';
 import { ICategory } from 'src/app/shared/models/category';
 import { IQuiz } from 'src/app/shared/models/quiz';
 import { QuizService } from '../service/quiz.service';
@@ -58,14 +58,19 @@ export class CreateQuizComponent implements OnInit {
         .pipe(
           switchMap(() => {
             return this.quizService.checkNameExists(control.value)
-              .pipe(
-                map(exists => exists ? {exists: true} : null),
-                finalize(() => console.log('finished inner'))
-              )
           }),
-          finalize(() => console.log('finished outer'))
-
+          map(exists => exists ? {exists: true} : null)
         )
+
+      // return of({})
+      //   .pipe(
+      //     delay(1000),
+      //     switchMap(() => {
+      //       return this.quizService.checkNameExists(control.value).pipe(finalize(() => console.log('finished inner')))
+      //     }),
+      //     map(exists => exists ? {exists: true} : null),
+      //     finalize(() => console.log('finished outer'))
+      //   );
     }
   }
 

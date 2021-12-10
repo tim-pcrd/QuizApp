@@ -17,7 +17,11 @@ namespace QuizApp.Application.Profiles
         public QuestionMappingProfile()
         {
 
-            CreateMap<CreateQuestionCommand, Question>();
+            CreateMap<CreateQuestionCommand, Question>()
+                .ForMember(
+                    dest => dest.ImageUrl,
+                    opt => opt.MapFrom(src => src.ImageFile.Image));
+
             CreateMap<CreateAnswerDto, Answer>();
 
             CreateMap<UpdateQuestionCommand, Question>();

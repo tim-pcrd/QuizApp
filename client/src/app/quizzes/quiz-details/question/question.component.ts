@@ -1,11 +1,10 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs/operators';
 import { moveItemsInFormArray } from 'src/app/shared/functions/form-functions';
 import { IQuestion, IQuestionToCreate } from 'src/app/shared/models/question';
-import { IQuiz } from 'src/app/shared/models/quiz';
 import * as _ from "underscore";
 import { QuizService } from '../../service/quiz.service';
 
@@ -17,14 +16,16 @@ import { QuizService } from '../../service/quiz.service';
 export class QuestionComponent implements OnInit, OnDestroy {
   @Input() question!: IQuestion;
   @Input() quizId!: number;
+  @Output() questionRemoved = new EventEmitter<IQuestion>();
   @Output() questionCreated = new EventEmitter<IQuestion>();
-  imageSrc: string = '';
+
+  imageSrc: string|null = null;
   editMode = false;
   createMode = false;
   disableEditButton = false;
   questionForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private quizService: QuizService, private sanitizer: DomSanitizer ) { }
+  constructor(private fb: FormBuilder, private quizService: QuizService, private toastr: ToastrService ) { }
 
   ngOnDestroy(): void {
     this.quizService.disableEdit.next(false);
@@ -54,7 +55,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-
     this.questionForm = this.fb.group({
       id: [this.question.id],
       text: [this.question.text, [Validators.required, Validators.maxLength(500)]],
@@ -108,6 +108,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
   }
 
+  deleteQuestion() {
+    if (this.question.id) {
+
+      this.quizService.deleteQuestion(this.question.id).subscribe(() => {
+        console.log('Vraag verwijderd');
+        this.questionRemoved.emit(this.question);
+        this.toastr.success(`Vraag (id: ${this.question.id}) succesvol verwijderd`)
+      },error => console.log(error));
+    }
+
+  }
+
   onFormSubmit() {
     console.log(this.questionForm.value);
 
@@ -121,6 +133,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             }
             this.editMode = false;
             this.quizService.disableEdit.next(false);
+            this.toastr.success(`Vraag (id: ${this.question.id}) succesvol gewijzigd`)
           },
           err => console.log(err));
       } else {
@@ -141,7 +154,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         )
         .subscribe((question: IQuestion) => {
           this.createMode = false;
-          this.questionCreated.emit(question)
+          this.questionCreated.emit(question);
+          this.toastr.success(`Vraag (id: ${question.id}) succesvol toegevoegd`)
         }, error => console.log(error))
       }
     }

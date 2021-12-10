@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using QuizApp.Application.Exceptions;
 using QuizApp.Application.Interfaces.Persistence;
 using QuizApp.Domain.Entities;
@@ -25,7 +26,7 @@ namespace QuizApp.Application.Features.Questions.Queries.GetQuestionDetails
 
         public async Task<QuestionDetailsVm> Handle(GetQuestionDetailsQuery request, CancellationToken cancellationToken)
         {
-            var question = await _context.Questions.FindAsync(request.QuestionId);
+            var question = await _context.Questions.Include(x => x.Answers).SingleOrDefaultAsync(x => x.Id == request.QuestionId);
 
             if (question is null) throw new NotFoundException(nameof(Question), request.QuestionId);
 

@@ -8,7 +8,7 @@
 </div>
 
 
-<ng-container *ngIf="quizzes">
+<ng-container *ngIf="quizzesPagination.data.length > 0">
   <div class="table-responsive">
     <table class="table table-hover border">
       <thead>
@@ -22,7 +22,7 @@
       </thead>
       <tbody>
 
-        <tr *ngFor="let quiz of quizzes.data" (click)="onRowClicked(quiz.id)">
+        <tr *ngFor="let quiz of quizzesPagination.data" (click)="onRowClicked(quiz.id)">
           <td>{{quiz.createdAt | date:'dd/MM/yyyy'}}</td>
           <td>{{quiz.name}}</td>
           <td>{{quiz.numberOfQuestions}}</td>
@@ -43,14 +43,14 @@
 
   <div class="d-flex justify-content-end">
     <span class="">
-      Resultaten {{((quizzes.pageIndex-1) * quizzes.pageSize) + 1}}-
-      {{(quizzes.pageSize * quizzes.pageIndex) <= quizzes.count ? (quizzes.pageSize * quizzes.pageIndex) : quizzes.count}}
-      van {{quizzes.count}}
+      Resultaten {{((quizzesPagination.pageIndex-1) * quizzesPagination.pageSize) + 1}}-
+      {{(quizzesPagination.pageSize * quizzesPagination.pageIndex) <= quizzesPagination.count ? (quizzesPagination.pageSize * quizzesPagination.pageIndex) : quizzesPagination.count}}
+      van {{quizzesPagination.count}}
     </span>
   </div>
   <pagination class="justify-content-center"
-    [totalItems]="quizzes.count"
-    [itemsPerPage]="quizzes.pageSize"
+    [totalItems]="quizzesPagination.count"
+    [itemsPerPage]="quizzesPagination.pageSize"
     [maxSize]="5"
     [boundaryLinks]="true"
     [firstText]="'<<'"
