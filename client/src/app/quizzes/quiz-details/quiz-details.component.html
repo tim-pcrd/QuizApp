@@ -7,12 +7,19 @@
   </div>
 
 
-  <form>
+  <div class="row">
+    <form>
 
-  </form>
-  <div class="text-end mb-2">
-
+    </form>
   </div>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-primary" *ngIf="quiz.status === 'Creating'" (click)="updateQuizStatus('Ready')">Zet quiz op actief</button>
+      <button class="btn btn-warning" *ngIf="quiz.status === 'Ready'" (click)="updateQuizStatus('Creating')">Zet quiz op inactief</button>
+    </div>
+  </div>
+
+
 
   <div *ngIf="newQuestion && createMode" class="shadow border border-3 border-primary mb-3 rounded">
     <div class="d-flex justify-content-between p-3">

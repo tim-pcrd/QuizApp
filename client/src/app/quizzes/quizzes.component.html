@@ -28,10 +28,10 @@
           <td>{{quiz.numberOfQuestions}}</td>
           <td>{{quiz.category}}</td>
           <td class="text-center">
-            <ng-container *ngIf="quiz.startDate else noStartDate">
+            <ng-container *ngIf="quiz.status === 'Ready' else noActive">
               <i class="far fa-check-circle" style="color:'green';font-size:1.3rem;"></i>
             </ng-container>
-            <ng-template #noStartDate>
+            <ng-template #noActive>
               <i class="far fa-times-circle" style="color:'red';font-size:1.3rem;"></i>
             </ng-template>
           </td>

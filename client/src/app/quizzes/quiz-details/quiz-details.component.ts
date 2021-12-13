@@ -14,7 +14,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./quiz-details.component.scss']
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
-  quiz: IQuizDetails | undefined;
+  quiz!: IQuizDetails;
   sub: Subscription | undefined;
   newQuestion: IQuestion | undefined;
   createMode = false;
@@ -84,6 +84,11 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.createMode = false;
   }
 
+  updateQuizStatus(status: string) {
+    this.quizService.updateQuizStatus(this.quiz?.id, status).subscribe(() => {
+      this.quiz.status = status;
+    }, error => console.log(error));
+  }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

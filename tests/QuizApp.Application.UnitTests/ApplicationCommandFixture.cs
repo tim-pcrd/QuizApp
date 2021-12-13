@@ -4,6 +4,7 @@ using Moq;
 using QuizApp.Application.Interfaces;
 using QuizApp.Application.Profiles;
 using QuizApp.Domain.Entities;
+using QuizApp.Domain.Enums;
 using QuizApp.Persistence;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace QuizApp.Application.UnitTests
                     CreatedBy = "Tim",
                     Category = category,
                     NumberOfQuestions = 10,
+                    Status = QuizStatus.Creating,
                     Questions = new List<Question> { }
                 });
 

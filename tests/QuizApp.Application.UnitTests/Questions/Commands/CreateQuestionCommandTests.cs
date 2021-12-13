@@ -5,6 +5,7 @@ using QuizApp.Application.Exceptions;
 using QuizApp.Application.Features.Questions.Commands.CreateQuestion;
 using QuizApp.Application.Interfaces.Application;
 using QuizApp.Application.Interfaces.Infrastructure;
+using QuizApp.Application.Models.Dtos;
 using QuizApp.Application.Profiles;
 using QuizApp.Domain.Entities;
 using QuizApp.Persistence;
@@ -33,6 +34,8 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
             validationMock = new Mock<IValidation<CreateQuestionCommand, CreateQuestionCommandValidator>>();
             fileStorageServiceMock = new Mock<IFileStorageService>();
 
+            context.ChangeTracker.Clear();
+
         }
 
         [Fact]
@@ -47,6 +50,33 @@ namespace QuizApp.Application.UnitTests.Questions.Commands
             var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object, fileStorageServiceMock.Object);
 
             var result = await sut.Handle(command, CancellationToken.None);
+
+            fileStorageServiceMock.Verify(x => x.SaveFile(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>()),Times.Never);
+
+            Assert.True(result > 0);
+
+        }
+
+        [Fact]
+        public async Task CreateQuestionHandler_WithImage_ReturnsId()
+        {
+
+            fileStorageServiceMock.Setup(x => x.SaveFile(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync("imageURL");
+
+            var command = new CreateQuestionCommand
+            {
+                QuizId = 1,
+                Text = "Dit is een vraag",
+                ImageFile = new ImageDto { Extension = "jpg", Image = "sdfsdfsdfsdf"}
+            };
+
+            var sut = new CreateQuestionCommandHandler(context, mapper, validationMock.Object, fileStorageServiceMock.Object);
+
+            var result = await sut.Handle(command, CancellationToken.None);
+
+            fileStorageServiceMock.Verify(x => x.SaveFile(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
+            Assert.Equal("imageURL", command.ImageFile.Image);
 
             Assert.True(result > 0);
 

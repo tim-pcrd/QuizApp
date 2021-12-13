@@ -68,7 +68,7 @@ namespace QuizApp.Application.UnitTests.Quizzes.Commands
 
             var exception = await Assert.ThrowsAsync<NotFoundException>(result);
 
-            Assert.Equal($"{nameof(Quiz)} (9999) is not found", exception.Message);
+            Assert.Equal($"{nameof(Quiz)} (id: 9999) niet gevonden", exception.Message);
 
             validationMock.Verify(x => x.Validate(command), Times.Once);
         }

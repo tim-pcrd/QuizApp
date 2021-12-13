@@ -1,1 +1,7 @@
-<p>server-error works!</p>
+<div class="d-flex flex-column align-items-center">
+  <h2 class="text-danger">Error: 500</h2>
+
+  <p>{{error?.message}}</p>
+  <code class="border border-danger rounded-1 p-2" *ngIf="error?.details">{{error.details}}</code>
+</div>
+

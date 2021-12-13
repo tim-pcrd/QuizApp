@@ -47,7 +47,8 @@ namespace QuizApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateQuestionCommand command)
         {
-            command.Id = id;
+            if (id != command.Id) return BadRequest();
+
             await _mediator.Send(command);
 
             return NoContent();

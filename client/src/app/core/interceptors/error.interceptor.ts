@@ -33,7 +33,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
           return throwError(httpError.error);
         }
-        return throwError({error: 'Unknown error'});
+        return throwError({message: 'Unknown error'});
       })
     );
   }

@@ -4,6 +4,7 @@ using QuizApp.API.Helpers;
 using QuizApp.Application.Features.Quizzes.Commands.CreateQuiz;
 using QuizApp.Application.Features.Quizzes.Commands.DeleteQuiz;
 using QuizApp.Application.Features.Quizzes.Commands.UpdateQuiz;
+using QuizApp.Application.Features.Quizzes.Commands.UpdateQuizStatus;
 using QuizApp.Application.Features.Quizzes.Queries.CheckNameExists;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizDetails;
 using QuizApp.Application.Features.Quizzes.Queries.GetQuizzesByUser;
@@ -30,7 +31,6 @@ namespace QuizApp.API.Controllers
         [HttpGet]
         public async Task<ActionResult<Pagination<GetQuizzesByUserVm>>> GetQuizzes([FromQuery] PaginationParams paginationParams)
         {
-
             //TODO check userId
             var quizzes = await _mediator.Send(new GetQuizzesByUserQuery(paginationParams.PageIndex, paginationParams.PageSize,
                 _loggedInUserService.UserName));
@@ -58,14 +58,16 @@ namespace QuizApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateQuizCommand createQuizCommand)
         {
-            var response = await _mediator.Send(createQuizCommand);
+            var result = await _mediator.Send(createQuizCommand);
 
-            return Ok(response);
+            return Ok(new CreateReponse { Id = result });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(UpdateQuizCommand command)
+        public async Task<IActionResult> Update(int id, UpdateQuizCommand command)
         {
+            if (id != command.Id) return BadRequest();
+
             await _mediator.Send(command);
 
             return NoContent();
@@ -75,6 +77,16 @@ namespace QuizApp.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _mediator.Send(new DeleteQuizCommand(id));
+
+            return NoContent();
+        }
+
+        [HttpPost("{id}/updatestatus")]
+        public async Task<IActionResult> UpdateQuizStatus(int id, UpdateQuizStatusCommand command)
+        {
+            if (id != command.QuizId) return BadRequest();
+
+            await _mediator.Send(command);
 
             return NoContent();
         }

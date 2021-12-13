@@ -59,10 +59,9 @@ export class QuizService {
     return this.http.get<ICategory[]>(`${this.baseUrl}categories`);
   }
 
-
-
-
-
+  updateQuizStatus(quizId: number, quizStatus: string) {
+    return this.http.post(`${this.baseUrl}quizzes/${quizId}/updatestatus`, {quizId, quizStatus});
+  }
 
 }
 

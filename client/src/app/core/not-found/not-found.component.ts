@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Error } from 'src/app/shared/models/error';
 
 @Component({
   selector: 'app-not-found',
@@ -7,17 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./not-found.component.scss']
 })
 export class NotFoundComponent implements OnInit {
-  error: any;
+  error: Error;
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.error = navigation?.extras?.state?.error;
-    console.log(navigation);
-    console.log(this.error);
    }
 
   ngOnInit(): void {
-
+    console.log(this.error?.message);
   }
 
 }
