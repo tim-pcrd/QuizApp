@@ -6,6 +6,8 @@ import { FormControlValidationComponent } from './components/form-control-valida
 import { ModalComponent } from './components/modal/modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { HoldableDirective } from './directives/holdable.directive';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 
 
@@ -13,7 +15,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
   declarations: [
     FormControlValidationComponent,
     ModalComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    HoldableDirective
   ],
   imports: [
     CommonModule
@@ -25,7 +28,9 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     ReactiveFormsModule,
     FormControlValidationComponent,
     ModalComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    HoldableDirective,
+    ProgressbarModule
   ]
 })
 export class SharedModule { }

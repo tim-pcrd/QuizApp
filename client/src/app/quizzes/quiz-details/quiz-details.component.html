@@ -14,8 +14,10 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <button class="btn btn-primary" *ngIf="quiz.status === 'Creating'" (click)="updateQuizStatus('Ready')">Zet quiz op actief</button>
-      <button class="btn btn-warning" *ngIf="quiz.status === 'Ready'" (click)="updateQuizStatus('Creating')">Zet quiz op inactief</button>
+      <button class="btn btn-primary me-2" *ngIf="quiz.status === 'Creating'" (click)="updateQuizStatus('Ready')">Zet quiz op actief</button>
+      <button class="btn btn-warning me-2" *ngIf="quiz.status === 'Ready'" (click)="updateQuizStatus('Creating')">Zet quiz op inactief</button>
+      <button class="btn btn-danger" holdable (holdTime)="holdHandler($event)"><i class="fas fa-trash-alt"></i> Verwijder Quiz</button>
+      <progressbar class="w-25" [value]="deleteProgress" type="danger" [max]="50" [animate]="true">{{deleteProgress}}%</progressbar>
     </div>
   </div>
 

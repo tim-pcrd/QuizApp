@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { IQuiz, IQuizDetails } from 'src/app/shared/models/quiz';
@@ -18,9 +18,10 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   sub: Subscription | undefined;
   newQuestion: IQuestion | undefined;
   createMode = false;
+  deleteProgress: number = 0;
 
 
-  constructor(private route: ActivatedRoute, private quizService: QuizService) { }
+  constructor(private route: ActivatedRoute, private quizService: QuizService, private router: Router) { }
 
 
   ngOnInit(): void {
@@ -88,6 +89,18 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.quizService.updateQuizStatus(this.quiz?.id, status).subscribe(() => {
       this.quiz.status = status;
     }, error => console.log(error));
+  }
+
+  holdHandler(e: any) {
+    if (e <= 1000) {
+      this.deleteProgress = (e/10);
+    }
+    else {
+      // this.quizService.deleteQuiz(this.quiz.id).subscribe(x => {
+      //   console.log('Quiz deleted');
+      //   this.router.navigateByUrl('/quizzen');
+      // })
+    }
   }
 
   ngOnDestroy(): void {

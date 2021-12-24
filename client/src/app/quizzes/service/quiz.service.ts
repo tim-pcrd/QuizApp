@@ -63,6 +63,10 @@ export class QuizService {
     return this.http.post(`${this.baseUrl}quizzes/${quizId}/updatestatus`, {quizId, quizStatus});
   }
 
+  deleteQuiz(quizId: number) {
+    return this.http.delete(`${this.baseUrl}quizzes/${quizId}`);
+  }
+
 }
 
 
